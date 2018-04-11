@@ -1,0 +1,290 @@
+@import (reference) url("refs.less");
+
+// Utilities
+// --------------------------------------------------
+.u-clearboth { clear: both; }
+
+.u-innerWidth {
+  max-width: 1100px;
+  width: 90%;
+  min-width: 900px !important;
+  margin: 0 auto;
+}
+
+// Type
+// --------------------------------------------------
+
+body, button { font-family: "proxima-nova",sans-serif; }
+
+h1 {
+  font-size: 50px;
+  line-height: 55px;
+  font-weight: 300;
+}
+
+h2 {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 25px;
+  line-height: 28px;
+}
+
+p {
+  font-size: 25px;
+  line-height: 35px;
+  font-weight: light;
+}
+
+// Position/Coloring
+// --------------------------------------------------
+
+body, html { background: @tanDark; }
+
+main {
+  background: @tanBg;
+  padding-bottom: 30px;
+ }
+
+header {
+  border-bottom: 1px solid @tanBorder;
+  padding: 30px 0;
+}
+
+header .logo {
+  width: 393px;
+  height: 55px;
+  background: url("@{imgRoot}/logo@2x.png") no-repeat left center;
+  background-size: contain;
+  display: block;
+  float: left;
+}
+
+header ul {
+  float: right;
+  padding-top: 15px;
+}
+
+header ul li {
+  float: left;
+  list-style: none;
+  margin-left: 30px;
+ }
+
+header ul li a,
+header ul li button {
+  color: @red;
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: padding 200ms, border 200ms;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+
+  &:hover {
+    border-bottom: 3px solid @red;
+    padding-bottom: 5px;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.Callout {
+  background: url("@{imgRoot}/kia-group@2x.png") no-repeat center bottom;
+  background-size: 2204px 531px;
+  height: 730px;
+}
+
+.Callout h1 {
+  color: @red;
+  max-width: 70%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 70px 0;
+}
+
+.Video {
+  margin-bottom: 50px;
+}
+
+.Content p {
+  color: @tanDark;
+  font-weight: 300;
+  margin-bottom: 50px;
+}
+.Main-Left-Buttons .Button {
+  width: 50%;
+  float: left;
+  &:first-child { padding-right: 15px; }
+  &:last-child { padding-left: 15px; }
+}
+
+.Description {
+  width: 580px;
+  margin: 0 auto;
+}
+
+.Description p {
+  text-align: center;
+  margin-bottom: 50px;
+  color: #5A5854;
+}
+
+.Buttons a {
+  border: 1px solid @tanBorder;
+  display: block;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 27px;
+  font-weight: bold;
+  color: @tanDark;
+  padding: 170px 30px 30px 30px;
+  background-color: lighten( @tanBg, 2%);
+  transition: background 300ms, border 300ms;
+  text-decoration: none;
+
+  &:hover {
+    border: 1px solid @tanDark;
+    cursor: pointer;
+    background-color: white;
+
+  }
+}
+
+.Button-Github {
+  background: url("@{imgRoot}/icon-github@2x.png") no-repeat center 30px;
+
+}
+.Button-Wiki {
+  background: url("@{imgRoot}/icon-wiki@2x.png") no-repeat center 50px;
+}
+
+.Main-Right {
+  border: 1px solid @tanBorder;
+  display: block;
+  border-radius: 4px;
+  background: white;
+}
+
+.Main-Right h2 {
+  text-align: center;
+  color: @red;
+  border-bottom: 1px solid @tanBorder;
+  padding: 25px 0;
+}
+
+.Main-Right-Info {
+  padding: 30px;
+
+  h3 {
+    margin-bottom: 20px;
+    color: @tanDark;
+  }
+
+  p {
+    font-size: 19px;
+    line-height: 25px;
+    margin-bottom: 20px;
+  }
+
+  .Photo-Btns {
+    margin-bottom: 20px;
+  }
+
+  .Photo-Btns a {
+    color: @tanDark;
+    text-decoration: none;
+    font-size: 14px;
+    border: 1px solid @tanBorder;
+    padding: 3px;
+    width: 45%;
+    display: block;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    float: left;
+
+    &:first-child {
+      margin-right: 5%;
+    }
+
+    &:hover {
+      border: 1px solid @tanDark;
+    }
+  }
+
+  button {
+    background-color: #2eb256;
+    color: #fff;
+    width: 100%;
+    display: inline-block;
+    font-weight: 500;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 100px;
+    transition: background 300ms;
+    margin-top: 20px;
+
+    &:hover {
+      background-color: lighten( #2eb256, 10% );
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+footer {
+  padding: 30px 0 50px 0;
+  display: block;
+}
+
+footer,
+footer a {
+  color: @tanBorder;
+  font-size: 14px;
+  text-decoration: none;
+}
+footer a:hover { color: white; }
+
+
+.Footer-left { float: left; }
+.Footer-right { float: right; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body{}

@@ -1,0 +1,36 @@
+// refs.less
+//
+// This is where all the different reference sheets are stored so
+// only one @import (reference) needs to be included in all other
+// structure/component files.
+
+// REMEMBER : Ref files DO NOT include classes.
+
+// Colors
+// --------------------------------------------------
+
+@tanBg: #F8F4E7;
+@tanBgDark: #EDE8D9;
+@tanBorder: #D9D7CE;
+@tanDark: #7C7A73;
+@red: #E93400;
+
+
+//Mixins
+// --------------------------------------------------
+
+.transitionAll(@attribute, @speed) {
+	-webkit-transition: @attribute @speed ease;
+	-moz-transition: @attribute @speed ease;
+	-ms-transition: @attribute @speed ease;
+	-o-transition: @attribute @speed ease;
+	transition: @attribute @speed ease;
+}
+
+.whiteBoxShadow {
+	background: #FFFFFF;
+	box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.30);
+
+}
+
+@imgRoot:"/assets/img/";

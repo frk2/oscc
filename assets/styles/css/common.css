@@ -1,0 +1,14 @@
+.u-clearboth {
+  clear: both;
+}
+.u-innerWidth {
+  max-width: 1100px;
+  width: 90%;
+  margin: 0 auto;
+}
+.img-demo {
+  background: url("/inc/img//test-image.jpg") no-repeat center bottom;
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+}

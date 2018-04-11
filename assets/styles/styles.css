@@ -1,0 +1,362 @@
+html,
+body,
+div,
+span,
+apfplet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+font,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  border: 0;
+  font-family: inherit;
+  font-size: 100%;
+  font-style: inherit;
+  font-weight: inherit;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+html {
+  font-size: 62.5%;
+  /* Corrects text resizing oddly in IE6/7 when body font-size is set using em units http://clagnut.com/blog/348/#c790 */
+  overflow-y: scroll;
+  /* Keeps page centered in all browsers regardless of content height */
+  -webkit-text-size-adjust: 100%;
+  /* Prevents iOS text size adjust after orientation change, without disabling user zoom */
+  -ms-text-size-adjust: 100%;
+  /* www.456bereastreet.com/archive/201012/controlling_text_size_in_safari_for_ios_without_disabling_user_zoom/ */
+}
+*,
+*:before,
+*:after {
+  /* apply a natural box layout model to all elements; see http://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
+  -webkit-box-sizing: border-box;
+  /* Not needed for modern webkit but still used by Blackberry Browser 7.0; see http://caniuse.com/#search=box-sizing */
+  -moz-box-sizing: border-box;
+  /* Still needed for Firefox 28; see http://caniuse.com/#search=box-sizing */
+  box-sizing: border-box;
+}
+body,
+button,
+input,
+select,
+textarea {
+  color: #404040;
+  font-family: sans-serif;
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 1.5;
+}
+b,
+strong {
+  font-weight: bold;
+}
+dfn,
+cite,
+em,
+i {
+  font-style: italic;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+main,
+nav,
+section {
+  display: block;
+}
+
+.grid {
+  margin: 0 0 30px 0;
+}
+.grid:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+[class*='col-'] {
+  float: left;
+  padding-right: 30px;
+}
+.grid [class*='col-']:last-of-type {
+  padding-right: 0;
+}
+.col-2-3 {
+  width: 66.66%;
+}
+.col-1-3 {
+  width: 33.33%;
+}
+.col-1-2 {
+  width: 50%;
+}
+.col-1-4 {
+  width: 25%;
+}
+.col-1-8 {
+  width: 12.5%;
+}
+
+@media (min-width: 0) and (max-width: 480px) {
+  [class*='col-'] {
+    float: none;
+    padding-right: 0;
+    width: 100%;
+  }
+}
+@media (min-width: 480px) and (max-width: 768px) {
+  /* rules for mobile horizontal (480 > 768)  */
+}
+@media (min-width: 768px) and (max-width: 992px) {
+  /* rules for tablet (768 > 992) */
+}
+@media (min-width: 992px) and (max-width: 1200px) {
+  /* rules for desktop (992 > 1200) */
+}
+@media (min-width: 1200px) {
+  /* rules for large (> 1200) */
+}
+
+.u-clearboth {
+  clear: both;
+}
+.u-innerWidth {
+  max-width: 1100px;
+  width: 90%;
+  min-width: 900px !important;
+  margin: 0 auto;
+}
+body,
+button {
+  font-family: "proxima-nova", sans-serif;
+}
+h1 {
+  font-size: 50px;
+  line-height: 55px;
+  font-weight: 300;
+}
+h2 {
+  font-size: 30px;
+  font-weight: bold;
+}
+h3 {
+  font-size: 25px;
+  line-height: 28px;
+}
+p {
+  font-size: 25px;
+  line-height: 35px;
+  font-weight: light;
+}
+body,
+html {
+  background: #7C7A73;
+}
+main {
+  background: #F8F4E7;
+  padding-bottom: 30px;
+}
+header {
+  border-bottom: 1px solid #D9D7CE;
+  padding: 30px 0;
+}
+header .logo {
+  width: 393px;
+  height: 55px;
+  background: url("/assets/img//logo@2x.png") no-repeat left center;
+  background-size: contain;
+  display: block;
+  float: left;
+}
+header ul {
+  float: right;
+  padding-top: 15px;
+}
+header ul li {
+  float: left;
+  list-style: none;
+  margin-left: 30px;
+}
+header ul li a,
+header ul li button {
+  color: #E93400;
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: padding 200ms, border 200ms;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+}
+header ul li a:hover,
+header ul li button:hover {
+  border-bottom: 3px solid #E93400;
+  padding-bottom: 5px;
+}
+header ul li a:focus,
+header ul li button:focus {
+  outline: none;
+}
+.Callout {
+  background: url("/assets/img//kia-group@2x.png") no-repeat center bottom;
+  background-size: 2204px 531px;
+  height: 730px;
+}
+.Callout h1 {
+  color: #E93400;
+  max-width: 70%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 70px 0;
+}
+.Video {
+  margin-bottom: 50px;
+}
+.Content p {
+  color: #7C7A73;
+  font-weight: 300;
+  margin-bottom: 50px;
+}
+.Main-Left-Buttons .Button {
+  width: 50%;
+  float: left;
+}
+.Main-Left-Buttons .Button:first-child {
+  padding-right: 15px;
+}
+.Main-Left-Buttons .Button:last-child {
+  padding-left: 15px;
+}
+.Description {
+  width: 580px;
+  margin: 0 auto;
+}
+.Description p {
+  text-align: center;
+  margin-bottom: 50px;
+  color: #5A5854;
+}
+.Buttons a {
+  border: 1px solid #D9D7CE;
+  display: block;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 27px;
+  font-weight: bold;
+  color: #7C7A73;
+  padding: 170px 30px 30px 30px;
+  background-color: #faf8ef;
+  transition: background 300ms, border 300ms;
+  text-decoration: none;
+}
+.Buttons a:hover {
+  border: 1px solid #7C7A73;
+  cursor: pointer;
+  background-color: white;
+}
+.Button-Github {
+  background: url("/assets/img//icon-github@2x.png") no-repeat center 30px;
+}
+.Button-Wiki {
+  background: url("/assets/img//icon-wiki@2x.png") no-repeat center 50px;
+}
+
+.ContactLink {
+  display: block;
+  text-align: center;
+  color: #7C7A73;
+}
+
+.ContactLink a {
+  color: #7C7A73;
+  text-decoration: none;
+  border-bottom: 1px dotted #7C7A73 ;
+}
+
+.ContactLink a:hover {
+  color: #E93400;
+  border-bottom: 1px solid #E93400;
+}
+footer {
+  padding: 30px 0 50px 0;
+  display: block;
+}
+footer,
+footer a {
+  color: #D9D7CE;
+  font-size: 14px;
+  text-decoration: none;
+}
+footer a:hover {
+  color: white;
+}
+.Footer-left {
+  float: left;
+}
+.Footer-right {
+  float: right;
+}
+
+/**
+ * Featherlight - ultra slim jQuery lightbox
+ * Version 1.5.0 - http://noelboss.github.io/featherlight/
+ *
+ * Copyright 2016, Noël Raoul Bossart (http://www.noelboss.com)
+ * MIT Licensed.
+**/
+@media all{.featherlight{display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:2147483647;text-align:center;white-space:nowrap;cursor:pointer;background:#333;background:rgba(0,0,0,0)}.featherlight:last-of-type{background:rgba(0,0,0,.8)}.featherlight:before{content:'';display:inline-block;height:100%;vertical-align:middle;margin-right:-.25em}.featherlight .featherlight-content{position:relative;text-align:left;vertical-align:middle;display:inline-block;overflow:auto;padding:25px 25px 0;border-bottom:25px solid transparent;margin-left:5%;margin-right:5%;max-height:95%;background:#fff;cursor:auto;white-space:normal}.featherlight .featherlight-inner{display:block}.featherlight .featherlight-close-icon{position:absolute;z-index:9999;top:0;right:0;line-height:25px;width:25px;cursor:pointer;text-align:center;font-family:Arial,sans-serif;background:#fff;background:rgba(255,255,255,.3);color:#000}.featherlight .featherlight-image{width:100%}.featherlight-iframe .featherlight-content{border-bottom:0;padding:0}.featherlight iframe{border:0}.featherlight *{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}}@media only screen and (max-width:1024px){.featherlight .featherlight-content{margin-left:10px;margin-right:10px;max-height:98%;padding:10px 10px 0;border-bottom:10px solid transparent}}

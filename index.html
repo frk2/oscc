@@ -1,0 +1,139 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+        <meta id="myViewport" name="viewport" content="width = 950">
+        <script>
+        window.onload = function () {
+            var mvp = document.getElementById('myViewport');
+            mvp.setAttribute('content','width=950');
+        }
+        </script>
+
+        <title>OSCC - Open Source Car Control</title>
+
+        <meta name="description" content="Open-source hardware and software for autonomous vehicle development.">
+
+        <script src="https://use.fontawesome.com/52fe869529.js"></script>
+
+        <script src="https://use.typekit.net/nxh5piu.js"></script>
+        <script>try{Typekit.load({ async: true });}catch(e){}</script>
+
+        <script src="//code.jquery.com/jquery-latest.js"></script>
+        <script src="//cdn.rawgit.com/noelboss/featherlight/1.5.1/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="assets/styles/styles.css">
+
+        <script type="text/javascript">
+
+
+            $(document).ready(function() {
+
+              function matchCol(){
+
+                var left = $('.Main-Left').outerHeight();
+                var right = $('.Main-Right').outerHeight();
+
+                var diff = left - right;
+
+                $('.Main-Right').css({
+                  marginTop: diff
+                });
+              }
+
+              $(window).on('resize', function(){ matchCol(); });
+
+              matchCol();
+
+            });
+
+        </script>
+
+    </head>
+    <body>
+
+      <main class="Home">
+
+        <header class="u-innerWidth">
+
+            <a href="#" class="logo"></a>
+
+            <ul>
+
+              <li><a href="https://github.com/PolySync/OSCC">view on github</a></li>
+              <li><a href="https://github.com/PolySync/OSCC/wiki">read the wiki</a></li>
+            </ul>
+          <div class="u-clearboth"></div>
+        </header>
+
+
+        <section class="Callout">
+
+          <div class="u-innerWidth">
+            <h1>Open-source hardware and software for autonomous vehicle development.</h1>
+            <div class="img-KIA"></div>
+          </div>
+
+        </section>
+
+        <section class="Video">
+          <div class="u-innerWidth">
+            <script src="//content.jwplatform.com/players/1pCfzDxi-i83WwCkC.js"></script>
+          </div>
+        </section>
+
+        <section class="Description">
+
+
+          <p><strong>OSCC</strong> enables engineers to build their own self-driving development vehicle using existing by-wire technologies on the 2014-or-later Kia Soul. </p>
+
+          <div class="Buttons grid">
+            <div class="Button col-1-2">
+              <a class="Button-Github" href="https://github.com/PolySync/OSCC"> View the Repo </a>
+            </div>
+            <div class="Button col-1-2">
+              <a class="Button-Wiki" href="https://github.com/PolySync/OSCC/wiki"> Read the Wiki </a>
+            </div>
+          </div>
+
+          <div class="ContactLink">
+            Have questions? <a href="mailto:drivekit@polysync.io">Write us</a>.
+          </div>
+
+        </section>
+
+
+      </main>
+
+
+      <footer>
+        <div class="u-innerWidth">
+          <div class="Footer-left">
+            OSCC  | <a href="https://github.com/PolySync/OSCC/blob/master/LICENSE.md">Licenses / Copyright</a>
+          </div>
+          <div class="Footer-right">
+            A <a href="http://polysync.io">PolySync</a> Project
+          </div>
+        </div>
+        <div class="u-clearBoth"></div>
+      </footer>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-87442406-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+    </body>
+</html>
