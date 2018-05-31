@@ -4,5 +4,5 @@ oscc_test:
     - cd /builds/kia/oscc/firmware
     - mkdir build
     - cd build
-    - cmake .. -DKIA_SOUL_EV
+    - cmake .. -DKIA_SOUL_EV=ON
     - make
