@@ -65,7 +65,7 @@
  * @brief Maximum steering wheel angle in degrees
  *
  */
-#define KIA_SOUL_MAX_STEERING_WHEEL_ANGLE (420)
+#define KIA_SOUL_MAX_STEERING_WHEEL_ANGLE (520)
 
 /**
  * @brief Steering wheel angle message data.
