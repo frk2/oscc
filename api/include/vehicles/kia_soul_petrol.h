@@ -59,8 +59,7 @@
  * @brief Steering wheel angle message data.
  *
  */
-typedef struct
-{
+typedef struct {
     int16_t steering_wheel_angle; /* 1/10 degrees */
 
     uint8_t reserved[6]; /* Reserved. */
@@ -70,8 +69,7 @@ typedef struct
  * @brief Wheel speed message data.
  *
  */
-typedef struct
-{
+typedef struct {
     int16_t wheel_speed_front_left; /* 1/50 mph */
 
     int16_t wheel_speed_front_right; /* 1/50 mph */
@@ -85,8 +83,7 @@ typedef struct
  * @brief Brake pressure message data.
  *
  */
-typedef struct
-{
+typedef struct {
     int16_t master_cylinder_pressure; /* 1/10th of a bar per bit */
 
     uint8_t reserved[6]; /* Reserved. */
@@ -99,10 +96,10 @@ typedef struct
 // VEHICLE AND BOARD PARAMETERS
 // ****************************************************************************
 
- /*
- * @brief Number of steps per volt corresponding to 4096 steps (2^12) across 5 volts.
- *
- */
+/*
+* @brief Number of steps per volt corresponding to 4096 steps (2^12) across 5 volts.
+*
+*/
 #define STEPS_PER_VOLT ( 819.2 )
 
 /*
@@ -135,13 +132,13 @@ typedef struct
  * @brief Calculation to convert a brake position to a pedal position.
  *
  */
-#define BRAKE_POSITION_TO_PEDAL( position ) ( (position) )
+#define BRAKE_POSITION_TO_PEDAL(position) ( (position) )
 
 /*
  * @brief Calculation to convert a brake pressure to a pedal position.
  *
  */
-#define BRAKE_PRESSURE_TO_PEDAL( pressure ) ( (pressure) )
+#define BRAKE_PRESSURE_TO_PEDAL(pressure) ( (pressure) )
 
 /*
  * @brief Minimum accumulator presure. [decibars]
@@ -384,7 +381,7 @@ typedef struct
  * @brief Minimum allowed value for the high spoof signal value.
  *
  */
-#define STEERING_TORQUE_TO_VOLTS_HIGH( torque ) (\
+#define STEERING_TORQUE_TO_VOLTS_HIGH(torque) (\
             ((TORQUE_SPOOF_HIGH_SIGNAL_CALIBRATION_CURVE_SCALE * (torque))\
             + TORQUE_SPOOF_HIGH_SIGNAL_CALIBRATION_CURVE_OFFSET))
 
@@ -392,7 +389,7 @@ typedef struct
  * @brief Calculation to convert a steering torque to a low spoof value.
  *
  */
-#define STEERING_TORQUE_TO_VOLTS_LOW( torque ) (\
+#define STEERING_TORQUE_TO_VOLTS_LOW(torque) (\
             ((TORQUE_SPOOF_LOW_SIGNAL_CALIBRATION_CURVE_SCALE * (torque))\
             + TORQUE_SPOOF_LOW_SIGNAL_CALIBRATION_CURVE_OFFSET))
 
@@ -478,7 +475,7 @@ typedef struct
  * @brief Calculation to convert a throttle position to a low spoof voltage.
  *
  */
-#define THROTTLE_POSITION_TO_VOLTS_LOW( position ) ( (position) *\
+#define THROTTLE_POSITION_TO_VOLTS_LOW(position) ( (position) *\
     (THROTTLE_SPOOF_LOW_SIGNAL_VOLTAGE_MAX - THROTTLE_SPOOF_LOW_SIGNAL_VOLTAGE_MIN) +\
     THROTTLE_SPOOF_LOW_SIGNAL_VOLTAGE_MIN  )
 
@@ -486,7 +483,7 @@ typedef struct
  * @brief Calculation to convert a throttle position to a high spoof voltage.
  *
  */
-#define THROTTLE_POSITION_TO_VOLTS_HIGH( position ) ( (position) *\
+#define THROTTLE_POSITION_TO_VOLTS_HIGH(position) ( (position) *\
     (THROTTLE_SPOOF_HIGH_SIGNAL_VOLTAGE_MAX - THROTTLE_SPOOF_HIGH_SIGNAL_VOLTAGE_MIN) +\
     THROTTLE_SPOOF_HIGH_SIGNAL_VOLTAGE_MIN  )
 
@@ -495,7 +492,6 @@ typedef struct
  *
  */
 #define ACCELERATOR_OVERRIDE_THRESHOLD ( 185.0 )
-
 
 
 #endif

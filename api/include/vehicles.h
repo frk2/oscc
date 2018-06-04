@@ -12,7 +12,9 @@
 #if defined(KIA_SOUL)
 #include "vehicles/kia_soul_petrol.h"
 #elif defined(KIA_SOUL_EV)
+
 #include "vehicles/kia_soul_ev.h"
+
 #elif defined(KIA_NIRO)
 #include "vehicles/kia_niro.h"
 #endif
