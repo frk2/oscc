@@ -5,7 +5,7 @@ oscc_test:
     - mkdir build && cd build
     - cmake .. -DKIA_SOUL_EV=ON
     - make
-    - cd ../api
+    - cd ../../api
     - mkdir build && cd build
     - cmake ..
     - make
