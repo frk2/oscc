@@ -32,8 +32,7 @@
 #define OSCC_FAULT_REPORT_CAN_DLC (8)
 
 
-typedef enum
-{
+typedef enum {
     FAULT_ORIGIN_BRAKE,
     FAULT_ORIGIN_STEERING,
     FAULT_ORIGIN_THROTTLE
@@ -49,8 +48,7 @@ typedef enum
  * Message size (CAN frame DLC): \ref OSCC_FAULT_REPORT_CAN_DLC
  *
  */
-typedef struct
-{
+typedef struct {
     uint8_t magic[2]; /*!< Magic number identifying CAN frame as from OSCC.
                        *   Byte 0 should be \ref OSCC_MAGIC_BYTE_0.
                        *   Byte 1 should be \ref OSCC_MAGIC_BYTE_1. */

@@ -60,16 +60,15 @@
  * @brief Enumeration of all possible brake DTCs.
  *
  */
-enum
-{
+enum {
     /* DTC bitfield position indicating an invalid sensor value. */
-    OSCC_BRAKE_DTC_INVALID_SENSOR_VAL = 0,
+            OSCC_BRAKE_DTC_INVALID_SENSOR_VAL = 0,
 
     /* DTC bitfield position indicating an operator override. */
-    OSCC_BRAKE_DTC_OPERATOR_OVERRIDE,
+            OSCC_BRAKE_DTC_OPERATOR_OVERRIDE,
 
     /* Number of possible brake DTCs. */
-    OSCC_BRAKE_DTC_COUNT
+            OSCC_BRAKE_DTC_COUNT
 };
 
 
@@ -82,8 +81,7 @@ enum
  * CAN frame ID: \ref OSCC_BRAKE_ENABLE_CAN_ID
  *
  */
-typedef struct
-{
+typedef struct {
     uint8_t magic[2]; /*!< Magic number identifying CAN frame as from OSCC.
                        *   Byte 0 should be \ref OSCC_MAGIC_BYTE_0.
                        *   Byte 1 should be \ref OSCC_MAGIC_BYTE_1. */
@@ -98,8 +96,7 @@ typedef struct
  * CAN frame ID: \ref OSCC_BRAKE_DISABLE_CAN_ID
  *
  */
-typedef struct
-{
+typedef struct {
     uint8_t magic[2]; /*!< Magic number identifying CAN frame as from OSCC.
                        *   Byte 0 should be \ref OSCC_MAGIC_BYTE_0.
                        *   Byte 1 should be \ref OSCC_MAGIC_BYTE_1. */
@@ -114,8 +111,7 @@ typedef struct
  * CAN frame ID: \ref OSCC_BRAKE_COMMAND_CAN_ID
  *
  */
-typedef struct
-{
+typedef struct {
     uint8_t magic[2]; /*!< Magic number identifying CAN frame as from OSCC.
                        *   Byte 0 should be \ref OSCC_MAGIC_BYTE_0.
                        *   Byte 1 should be \ref OSCC_MAGIC_BYTE_1. */
@@ -133,8 +129,7 @@ typedef struct
  * CAN frame ID: \ref OSCC_BRAKE_REPORT_CAN_ID
  *
  */
-typedef struct
-{
+typedef struct {
     uint8_t magic[2]; /*!< Magic number identifying CAN frame as from OSCC.
                        *   Byte 0 should be \ref OSCC_MAGIC_BYTE_0.
                        *   Byte 1 should be \ref OSCC_MAGIC_BYTE_1. */
