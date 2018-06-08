@@ -108,8 +108,8 @@ void update_throttle(
                 THROTTLE_SPOOF_LOW_SIGNAL_RANGE_MAX );
 
         cli();
-        g_dac.outputA( spoof_high );
-        g_dac.outputB( spoof_low );
+        g_dac.outputA( spoof_low );
+        g_dac.outputB( spoof_high );
         sei();
     }
 }

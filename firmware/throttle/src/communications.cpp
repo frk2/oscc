@@ -16,6 +16,7 @@
 #include "throttle_control.h"
 #include "vehicles.h"
 
+#define STEPS_PER_VOLT ( 871.489362 ) // 1.00V
 
 static void process_rx_frame(
     const can_frame_s * const frame );
