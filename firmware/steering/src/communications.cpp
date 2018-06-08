@@ -16,6 +16,7 @@
 #include "oscc_can.h"
 #include "vehicles.h"
 
+#define STEPS_PER_VOLT ( 844.536082 ) // 1.0V
 
 static void process_rx_frame(
     const can_frame_s * const frame );
