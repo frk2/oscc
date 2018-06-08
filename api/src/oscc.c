@@ -163,26 +163,36 @@ oscc_result_t oscc_publish_steering_position(double degrees)
     double integ = 0;
     double deriv = 0;
 
-    double err = degrees - curr_angle;
+    double err = curr_angle - degrees;
     double prev_err = err;
     double curr_time;
     prev_time = time(NULL);
 
-    while (err > 0.5) {
+    if (abs(err) > 0.5) {
         curr_time = time(NULL);
         dt = curr_time - prev_time;
 
         // PID
-        double p = 1 * err;
+        double p = 0.1 * err;
         integ += err * dt;
         double i = 0 * integ;
         deriv = (err - prev_err) / dt;
         double d = 0 * deriv;
 
-        double torque = p + i + d;
+        double torque = p; // + i + d;
 
-        result = oscc_publish_steering_torque(torque);
-        err = degrees - curr_angle;
+        if (torque > 0.2) {
+            torque = 0.2;
+        }
+        else if (torque < -0.2) {
+            torque = -0.2;
+        }
+
+        if (!isnan(torque)) {
+            result = oscc_publish_steering_torque(torque);
+        }
+
+        err = curr_angle - degrees;
         prev_err = err;
         prev_time = curr_time;
     }
