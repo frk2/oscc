@@ -1,0 +1,11 @@
+oscc_test:
+  stage: build
+  script:
+    - cd /builds/kia/oscc/firmware
+    - mkdir build && cd build
+    - cmake .. -DKIA_SOUL_EV=ON
+    - make
+    - cd ../../api
+    - mkdir build && cd build
+    - cmake ..
+    - make
