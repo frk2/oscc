@@ -10,3 +10,5 @@
 
 #cucumber port
 cucumber.wire
+
+__pycache__/
