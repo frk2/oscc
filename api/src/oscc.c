@@ -21,7 +21,6 @@ static int can_socket = -1;
 static double curr_angle = 0;
 
 
-
 oscc_result_t oscc_open(unsigned int channel) {
     oscc_result_t result = OSCC_ERROR;
 
@@ -153,49 +152,81 @@ oscc_result_t oscc_publish_steering_torque(double torque) {
     return result;
 }
 
-oscc_result_t oscc_publish_steering_position(double degrees)
-{
+oscc_result_t oscc_publish_steering_position(double degrees) {
     oscc_result_t result = OSCC_ERROR;
 
-    double prev_time = 0;
-    double dt = 0;
+    static struct timespec start, end;
+    clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+    //do stuff
 
-    double integ = 0;
-    double deriv = 0;
+    double dt = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
+    //printf("%fl\n", delta);
 
+
+
+    static double integ;
+    static double deriv;
+
+    //static double err;
+    double angle = curr_angle;
+    static double prev_err;
+
+    double dv;
+    static double prev_angle;
     double err = curr_angle - degrees;
-    double prev_err = err;
-    double curr_time;
-    prev_time = time(NULL);
 
-    if (abs(err) > 0.5) {
-        curr_time = time(NULL);
-        dt = curr_time - prev_time;
-
+    if (fabs(curr_angle - degrees) > 0.01) {
         // PID
-        double p = 0.1 * err;
-        integ += err * dt;
-        double i = 0 * integ;
-        deriv = (err - prev_err) / dt;
-        double d = 0 * deriv;
+        if (dt < 2 & prev_err != 0) {
+//            double torque = 0;
+//
+//            dv = fabs((angle - prev_angle) / dt);
+//            err = 1 - dv;
+//            deriv = (err - prev_err) / dt;
+//            double p = 0.2 * err;
+//            double d = 0.00005 * deriv;
+//            printf("P: %f D: %f dv: %f\n", p, d, dv);
+//
+//            torque = -(p + d);
 
-        double torque = p; // + i + d;
 
-        if (torque > 0.2) {
-            torque = 0.2;
+            double p = 0.115 * err;
+            deriv = (err - prev_err) / dt;
+            integ += err * dt;
+            double i = 0.42 * integ;
+            double d = 0.0004 * deriv;
+            //printf("P: %f I: %f D: %f\n", p, i, d);
+
+            double torque = p + i; //d;
+            //printf("%f\n", torque);
+
+            if (torque > 0.24) {
+                torque - i;
+                integ -= err * dt;
+                torque = 0.24;
+            }
+            else if (torque < -0.24) {
+                //torque = -0.2;
+                torque - i;
+                integ -= err * dt;
+                torque = - 0.24;
+            }
+
+//            if (curr_angle > 0) {
+//                torque = 0;
+//            }
+
+            if (!isnan(torque)) {
+                result = oscc_publish_steering_torque(torque);
+                printf("%f,%f,%f,%f,%f\n", dt, curr_angle, degrees, torque, deriv);
+            }
+
         }
-        else if (torque < -0.2) {
-            torque = -0.2;
-        }
-
-        if (!isnan(torque)) {
-            result = oscc_publish_steering_torque(torque);
-        }
-
-        err = curr_angle - degrees;
-        prev_err = err;
-        prev_time = curr_time;
     }
+    err = curr_angle - degrees;
+    prev_err = err;
+    prev_angle = angle;
+    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 
 
     return result;
@@ -272,16 +303,15 @@ oscc_result_t oscc_get_steering_angle(struct can_frame *frame) {
     oscc_result_t result = OSCC_ERROR;
 
 
-    kia_soul_obd_steering_wheel_angle_data_s* steering_data = (kia_soul_obd_steering_wheel_angle_data_s*) frame->data;
+    kia_soul_obd_steering_wheel_angle_data_s *steering_data = (kia_soul_obd_steering_wheel_angle_data_s *) frame->data;
 
     curr_angle = steering_data->steering_wheel_angle * KIA_SOUL_OBD_STEERING_ANGLE_SCALAR *
-            KIA_SOUL_MAX_STEERING_ANGLE / KIA_SOUL_MAX_STEERING_WHEEL_ANGLE;
+                 KIA_SOUL_MAX_STEERING_ANGLE / KIA_SOUL_MAX_STEERING_WHEEL_ANGLE;
     result = OSCC_OK;
 
 
     return result;
 }
-
 
 
 oscc_result_t oscc_enable_brakes(void) {
