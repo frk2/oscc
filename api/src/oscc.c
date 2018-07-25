@@ -21,7 +21,6 @@ static int can_socket = -1;
 static double curr_angle = 0;
 
 
-
 oscc_result_t oscc_open(unsigned int channel) {
     oscc_result_t result = OSCC_ERROR;
 
@@ -153,50 +152,21 @@ oscc_result_t oscc_publish_steering_torque(double torque) {
     return result;
 }
 
-oscc_result_t oscc_publish_steering_position(double degrees)
-{
+oscc_result_t oscc_publish_steering_position(double degrees) {
     oscc_result_t result = OSCC_ERROR;
 
-    double prev_time = 0;
-    double dt = 0;
+    oscc_steering_angle_command_s steering_cmd =
+            {
+                    .magic[0] = (uint8_t) OSCC_MAGIC_BYTE_0,
+                    .magic[1] = (uint8_t) OSCC_MAGIC_BYTE_1
+            };
 
-    double integ = 0;
-    double deriv = 0;
+    steering_cmd.angle = (float) degrees;
 
-    double err = curr_angle - degrees;
-    double prev_err = err;
-    double curr_time;
-    prev_time = time(NULL);
-
-    if (abs(err) > 0.5) {
-        curr_time = time(NULL);
-        dt = curr_time - prev_time;
-
-        // PID
-        double p = 0.1 * err;
-        integ += err * dt;
-        double i = 0 * integ;
-        deriv = (err - prev_err) / dt;
-        double d = 0 * deriv;
-
-        double torque = p; // + i + d;
-
-        if (torque > 0.2) {
-            torque = 0.2;
-        }
-        else if (torque < -0.2) {
-            torque = -0.2;
-        }
-
-        if (!isnan(torque)) {
-            result = oscc_publish_steering_torque(torque);
-        }
-
-        err = curr_angle - degrees;
-        prev_err = err;
-        prev_time = curr_time;
-    }
-
+    result = oscc_can_write(
+            OSCC_STEERING_ANGLE_COMMAND_CAN_ID,
+            (void *) &steering_cmd,
+            sizeof(steering_cmd));
 
     return result;
 }
@@ -272,16 +242,15 @@ oscc_result_t oscc_get_steering_angle(struct can_frame *frame) {
     oscc_result_t result = OSCC_ERROR;
 
 
-    kia_soul_obd_steering_wheel_angle_data_s* steering_data = (kia_soul_obd_steering_wheel_angle_data_s*) frame->data;
+    kia_soul_obd_steering_wheel_angle_data_s *steering_data = (kia_soul_obd_steering_wheel_angle_data_s *) frame->data;
 
     curr_angle = steering_data->steering_wheel_angle * KIA_SOUL_OBD_STEERING_ANGLE_SCALAR *
-            KIA_SOUL_MAX_STEERING_ANGLE / KIA_SOUL_MAX_STEERING_WHEEL_ANGLE;
+                 KIA_SOUL_MAX_STEERING_ANGLE / KIA_SOUL_MAX_STEERING_WHEEL_ANGLE;
     result = OSCC_OK;
 
 
     return result;
 }
-
 
 
 oscc_result_t oscc_enable_brakes(void) {
@@ -437,13 +406,9 @@ void oscc_update_status() {
                         fault_report_callback(fault_report);
                     }
                 }
-            } else {
-                if (obd_frame_callback != NULL) {
-                    obd_frame_callback(&rx_frame);
-                    if (rx_frame.can_id == KIA_SOUL_OBD_STEERING_WHEEL_ANGLE_CAN_ID) {
-                        oscc_get_steering_angle(&rx_frame);
-                    }
-                }
+            }
+            if (obd_frame_callback != NULL) {
+                obd_frame_callback(&rx_frame);
             }
 
             ret = read(can_socket, &rx_frame, CAN_MTU);
