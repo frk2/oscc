@@ -155,79 +155,18 @@ oscc_result_t oscc_publish_steering_torque(double torque) {
 oscc_result_t oscc_publish_steering_position(double degrees) {
     oscc_result_t result = OSCC_ERROR;
 
-    static struct timespec start, end;
-    clock_gettime(CLOCK_MONOTONIC_RAW, &end);
-    //do stuff
+    oscc_steering_angle_command_s steering_cmd =
+            {
+                    .magic[0] = (uint8_t) OSCC_MAGIC_BYTE_0,
+                    .magic[1] = (uint8_t) OSCC_MAGIC_BYTE_1
+            };
 
-    double dt = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
-    //printf("%fl\n", delta);
+    steering_cmd.angle = (float) degrees;
 
-
-
-    static double integ;
-    static double deriv;
-
-    //static double err;
-    double angle = curr_angle;
-    static double prev_err;
-
-    double dv;
-    static double prev_angle;
-    double err = curr_angle - degrees;
-
-    if (fabs(curr_angle - degrees) > 0.01) {
-        // PID
-        if (dt < 2 & prev_err != 0) {
-//            double torque = 0;
-//
-//            dv = fabs((angle - prev_angle) / dt);
-//            err = 1 - dv;
-//            deriv = (err - prev_err) / dt;
-//            double p = 0.2 * err;
-//            double d = 0.00005 * deriv;
-//            printf("P: %f D: %f dv: %f\n", p, d, dv);
-//
-//            torque = -(p + d);
-
-
-            double p = 0.115 * err;
-            deriv = (err - prev_err) / dt;
-            integ += err * dt;
-            double i = 0.42 * integ;
-            double d = 0.0004 * deriv;
-            //printf("P: %f I: %f D: %f\n", p, i, d);
-
-            double torque = p + i; //d;
-            //printf("%f\n", torque);
-
-            if (torque > 0.24) {
-                torque - i;
-                integ -= err * dt;
-                torque = 0.24;
-            }
-            else if (torque < -0.24) {
-                //torque = -0.2;
-                torque - i;
-                integ -= err * dt;
-                torque = - 0.24;
-            }
-
-//            if (curr_angle > 0) {
-//                torque = 0;
-//            }
-
-            if (!isnan(torque)) {
-                result = oscc_publish_steering_torque(torque);
-                printf("%f,%f,%f,%f,%f\n", dt, curr_angle, degrees, torque, deriv);
-            }
-
-        }
-    }
-    err = curr_angle - degrees;
-    prev_err = err;
-    prev_angle = angle;
-    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
-
+    result = oscc_can_write(
+            OSCC_STEERING_ANGLE_COMMAND_CAN_ID,
+            (void *) &steering_cmd,
+            sizeof(steering_cmd));
 
     return result;
 }
@@ -467,13 +406,9 @@ void oscc_update_status() {
                         fault_report_callback(fault_report);
                     }
                 }
-            } else {
-                if (obd_frame_callback != NULL) {
-                    obd_frame_callback(&rx_frame);
-                    if (rx_frame.can_id == KIA_SOUL_OBD_STEERING_WHEEL_ANGLE_CAN_ID) {
-                        oscc_get_steering_angle(&rx_frame);
-                    }
-                }
+            }
+            if (obd_frame_callback != NULL) {
+                obd_frame_callback(&rx_frame);
             }
 
             ret = read(can_socket, &rx_frame, CAN_MTU);

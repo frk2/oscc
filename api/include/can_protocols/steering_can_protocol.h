@@ -44,6 +44,8 @@
  */
 #define OSCC_STEERING_REPORT_CAN_ID (0x83)
 
+#define OSCC_STEERING_ANGLE_COMMAND_CAN_ID (0x84)
+
 /*
  * @brief Steering report message (CAN frame) length.
  *
@@ -124,6 +126,16 @@ typedef struct {
 
     uint8_t reserved[2]; /*!< Reserved. */
 } oscc_steering_command_s;
+
+typedef struct {
+    uint8_t magic[2]; /*!< Magic number identifying CAN frame as from OSCC.
+                       *   Byte 0 should be \ref OSCC_MAGIC_BYTE_0.
+                       *   Byte 1 should be \ref OSCC_MAGIC_BYTE_1. */
+
+    float angle; /*Angle in interval [-37, 37]*/
+
+    uint8_t reserved[2]; /*!< Reserved. */
+} oscc_steering_angle_command_s;
 
 
 /**
