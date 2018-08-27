@@ -5,6 +5,7 @@
 
 
 #include <stdint.h>
+#include <can_protocols/steering_can_protocol.h>
 
 #include "can_protocols/fault_can_protocol.h"
 #include "can_protocols/steering_can_protocol.h"
@@ -89,6 +90,7 @@ static void process_rx_frame(
         {
             if ( frame->id == OSCC_STEERING_ENABLE_CAN_ID )
             {
+                DEBUG_PRINTLN("HERE");
                 enable_control( );
             }
             else if ( frame->id == OSCC_STEERING_DISABLE_CAN_ID )
@@ -121,6 +123,8 @@ static void process_steering_command(
             MINIMUM_TORQUE_COMMAND,
             MAXIMUM_TORQUE_COMMAND);
 
+        DEBUG_PRINTLN(steering_command->torque_command);
+
         float spoof_voltage_low =
             STEERING_TORQUE_TO_VOLTS_LOW( clamped_torque );
 
@@ -129,16 +133,27 @@ static void process_steering_command(
             STEERING_SPOOF_LOW_SIGNAL_VOLTAGE_MIN,
             STEERING_SPOOF_LOW_SIGNAL_VOLTAGE_MAX);
 
+        DEBUG_PRINTLN("Clamp");
+        DEBUG_PRINTLN(clamped_torque);
+
         float spoof_voltage_high =
             STEERING_TORQUE_TO_VOLTS_HIGH( clamped_torque );
+
 
         spoof_voltage_high = CONSTRAIN(
             spoof_voltage_high,
             STEERING_SPOOF_HIGH_SIGNAL_VOLTAGE_MIN,
             STEERING_SPOOF_HIGH_SIGNAL_VOLTAGE_MAX);
 
+        DEBUG_PRINTLN("to v");
+        DEBUG_PRINTLN(spoof_voltage_low);
+        DEBUG_PRINTLN(spoof_voltage_high);
+
         const uint16_t spoof_value_low = STEPS_PER_VOLT * spoof_voltage_low;
         const uint16_t spoof_value_high = STEPS_PER_VOLT * spoof_voltage_high;
+//        DEBUG_PRINTLN(spoof_value_low);
+//        DEBUG_PRINTLN(spoof_value_high);
+        DEBUG_PRINTLN("-");
 
         update_steering( spoof_value_high, spoof_value_low );
     }

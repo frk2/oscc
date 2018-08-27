@@ -13,6 +13,8 @@
 
 int main( void )
 {
+    Serial.begin(115200);
+    Serial.println("here");
     init_arduino( );
 
     init_globals( );

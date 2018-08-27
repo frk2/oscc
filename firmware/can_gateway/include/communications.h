@@ -38,5 +38,6 @@ void check_for_module_reports( void );
 // ****************************************************************************
 void republish_obd_frames_to_control_can_bus( void );
 
+void publish_torque(float torque);
 
 #endif /* _OSCC_CAN_GATEWAY_COMMUNICATIONS_H_ */

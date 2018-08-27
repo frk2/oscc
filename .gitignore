@@ -10,3 +10,9 @@
 
 # Github
 .github/
+api/.idea/
+api/build/
+api/cmake-build-debug/
+firmware/.idea/
+firmware/build/
+firmware/cmake-build-debug/

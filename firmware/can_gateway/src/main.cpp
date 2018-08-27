@@ -5,6 +5,7 @@
 
 
 #include <avr/wdt.h>
+#include <oscc_pid.h>
 
 #include "arduino_init.h"
 #include "communications.h"
@@ -22,6 +23,14 @@ int main( void )
     init_communication_interfaces( );
 
     start_timer( );
+
+    pid_zeroize(&pid, 0);
+    pid.proportional_gain = 0.06;
+    pid.derivative_gain = 0.008;
+    pid.integral_gain = 0.8;
+
+
+
 
     wdt_enable( WDTO_250MS );
 

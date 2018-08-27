@@ -13,7 +13,7 @@
  * @brief Math macro: constrain(amount, low, high).
  *
  */
-#define m_constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
+#define m_constrain(amt, low, high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 
 /**
  * @brief Error in PID calculation.
@@ -32,8 +32,7 @@
  * @brief PID components.
  *
  */
-typedef struct
-{
+typedef struct {
     float windup_guard; /* Windup guard. */
 
     float proportional_gain; /* Proportional gain. */
@@ -45,6 +44,8 @@ typedef struct
     float prev_input; /* Previous input. */
 
     float int_error; /* Error. */
+
+    float prev_error;
 
     float control; /* Control. */
 
@@ -66,7 +67,7 @@ typedef struct
 //              [in] dt - differentiation value
 //
 // ****************************************************************************
-int pid_update( pid_s* pid, float setpoint, float input, float dt );
+int pid_update(pid_s *pid, float setpoint, float input, float dt);
 
 
 // ****************************************************************************
@@ -80,7 +81,15 @@ int pid_update( pid_s* pid, float setpoint, float input, float dt );
 //              [in] integral_windup_guard - windup guard value to set
 //
 // ****************************************************************************
-void pid_zeroize( pid_s* pid, float integral_windup_guard );
+void pid_zeroize(pid_s *pid, float integral_windup_guard);
+
+void update_pid();
+
+extern double setpoint;
+extern double curr_angle;
+extern int enabled;
+
+extern pid_s pid;
 
 
 #endif /* _OSCC_PID_H_ */
