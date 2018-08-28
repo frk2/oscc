@@ -186,18 +186,18 @@ void update_pid() {
 	} else
 	{
 // 	  
-// 	  BLA::Matrix<3,3> F;
-// 	  F << 1.0, delta_t_sec, (delta_t_sec * delta_t_sec * 0.5),
-// 	      0.0, 1.0,  delta_t_sec,
-// 	      0.0, 0.0, 0.8;
-// 	
-// 	  BLA::Matrix<3, 1> G;
-// 	  G << (delta_t_sec * delta_t_sec * delta_t_sec / 6.0), (delta_t_sec * delta_t_sec * 0.5), delta_t_sec;
-// 	  
-// 	  BLA::Matrix<1,3> obs_matr;
-// 	  obs_matr << 1.0, 0.0, 0.0;
-// 	  
-// 	  float observ_var = 0.14; //в коде чувака было 2, но так как у нас угол это угол установки колеса то 2*37/520
+	  BLA::Matrix<3,3> F;
+	  F << 1.0, delta_t_sec, (delta_t_sec * delta_t_sec * 0.5),
+	      0.0, 1.0,  delta_t_sec,
+	      0.0, 0.0, 0.8;
+	
+	  BLA::Matrix<3, 1> G;
+	  G << (delta_t_sec * delta_t_sec * delta_t_sec / 6.0), (delta_t_sec * delta_t_sec * 0.5), delta_t_sec;
+	  
+	  BLA::Matrix<1,3> obs_matr;
+	  obs_matr << 1.0, 0.0, 0.0;
+	  
+	  float observ_var = 0.14; //в коде чувака было 2, но так как у нас угол это угол установки колеса то 2*37/520
 // 	  
 // 	  KalmanUpdate(latest_mean, latest_covariance, F, G, obs_matr, curr_angle, observ_var, next_mean, next_covariance);
 	  
@@ -217,7 +217,7 @@ void update_pid() {
 
    int dt = (int)(delta_t_sec*1000);
 
-   DEBUG_PRINT(millis());
+   DEBUG_PRINT(dt);
    DEBUG_PRINT(",");
    DEBUG_PRINT(curr_angle);
    DEBUG_PRINT(",");
