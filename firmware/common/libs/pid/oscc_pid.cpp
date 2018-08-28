@@ -164,18 +164,18 @@ void update_pid() {
   
     if (enabled) {
       
-// 	BLA::Matrix<3, 1> next_mean;
-// 	BLA::Matrix<3, 3> next_covariance;
-// 	
-// 	if (!has_estimate)
-// 	{
-// 	  next_mean << curr_angle, 0.0, 0.0;
-// 	  next_covariance <<  1.0, 0.0, 0.0,
-// 			    0.0, 1.0, 0.0,
-// 			    0.0, 0.0, 1.0;
-// 	  has_estimate = true;
-// 	} else
-// 	{
+	BLA::Matrix<3, 1> next_mean;
+	BLA::Matrix<3, 3> next_covariance;
+	
+	if (!has_estimate)
+	{
+	  next_mean << curr_angle, 0.0, 0.0;
+	  next_covariance <<  1.0, 0.0, 0.0,
+			    0.0, 1.0, 0.0,
+			    0.0, 0.0, 1.0;
+	  has_estimate = true;
+	} else
+	{
 // 	  
 // 	  BLA::Matrix<3,3> F;
 // 	  F << 1.0, delta_t_sec, (delta_t_sec * delta_t_sec * 0.5),
@@ -195,9 +195,9 @@ void update_pid() {
 	  pid_update(&pid, setpoint, curr_angle, 0.02);
 	  
 	  publish_torque(pid.control);
-//	}
-//	latest_mean = next_mean;
-//	latest_covariance = next_covariance;
+	}
+	latest_mean = next_mean;
+	latest_covariance = next_covariance;
 	
     } else {
 	publish_torque(0.0);
