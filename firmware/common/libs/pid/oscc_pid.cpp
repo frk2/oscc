@@ -212,7 +212,9 @@ void update_pid() {
       
       last_time = curr_time;
 
-      DEBUG_PRINT(delta_t_sec*1000);
+      int dt = (int)delta_t_sec*1000;
+      
+      DEBUG_PRINT(dt);
       DEBUG_PRINT(",");
       DEBUG_PRINT(curr_angle);
       DEBUG_PRINT(",");
