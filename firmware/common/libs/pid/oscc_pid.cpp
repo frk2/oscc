@@ -51,19 +51,17 @@ int pid_update(pid_s *pid, float setpoint, float input, float dt) {
     // integration with windup guarding
     flag = 0;
     if (fabs(curr_error) < 2) {
-        if (fabs((pid->int_error * pid->integral_gain < INT_LIMIT)))
+      
+	float last_int_error = pid->int_error;
+        pid->int_error += (curr_error * dt);
+        flag = 1;
+	    
+	if (fabs(pid->int_error * pid->integral_gain) > INT_LIMIT)
         {
-            pid->int_error += (curr_error * dt);
-            flag = 1;
+           pid->int_error = last_int_error; //reset integreation error under limit 
+           flag = 2;
         }
-        else if (pid->int_error * pid->integral_gain > INT_LIMIT && curr_error < 0) {
-            pid->int_error += (curr_error * dt);
-            flag = 2;
-        }
-        else if (pid->int_error * pid->integral_gain < -INT_LIMIT && curr_error > 0) {
-            pid->int_error += (curr_error * dt);
-            flag = 3;
-        }
+        
     }
     else if (fabs(curr_error) >= 2 && fabs(curr_error) <= 5) {
         pid->int_error += 0.5 * (curr_error * dt);
