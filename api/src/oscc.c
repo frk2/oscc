@@ -537,7 +537,7 @@ oscc_result_t oscc_init_can(const char *can_channel) {
     }
 
 
-    if (resul   t == OSCC_OK) {
+    if (result == OSCC_OK) {
         /* all prior checks will pass even if a valid interface has not been
            set up - attempt to write an empty CAN frame to the interface to see
            if it is valid */

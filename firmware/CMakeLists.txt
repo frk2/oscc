@@ -114,6 +114,7 @@ else()
     add_subdirectory(can_gateway)
     add_subdirectory(steering)
     add_subdirectory(throttle)
+    #add_subdirectory(test_kalman)
 
     add_custom_target(
         all-upload
@@ -121,5 +122,6 @@ else()
         brake-upload
         can-gateway-upload
         steering-upload
+        #test-kalman-upload
         throttle-upload)
 endif()

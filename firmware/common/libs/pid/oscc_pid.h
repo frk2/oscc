@@ -8,6 +8,7 @@
 #ifndef _OSCC_PID_H_
 #define _OSCC_PID_H_
 
+#include <BasicLinearAlgebra.h>
 
 /**
  * @brief Math macro: constrain(amount, low, high).
@@ -88,6 +89,7 @@ void update_pid();
 extern double setpoint;
 extern double curr_angle;
 extern int enabled;
+extern int new_data;
 
 extern pid_s pid;
 

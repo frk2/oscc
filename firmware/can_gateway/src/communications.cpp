@@ -57,6 +57,7 @@ void republish_obd_frames_to_control_can_bus(void) {
         if ((rx_frame.id == KIA_SOUL_OBD_STEERING_WHEEL_ANGLE_CAN_ID)) {
             curr_angle = rx_frame.data[0] | rx_frame.data[1] << 8;
             curr_angle *= -0.1 * 37 / 520;
+	    new_data = 1;
             cli();
             g_control_can.sendMsgBuf(
                     rx_frame.id,

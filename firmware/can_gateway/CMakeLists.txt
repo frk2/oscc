@@ -45,4 +45,6 @@ target_include_directories(
         ${CMAKE_SOURCE_DIR}/common/libs/pid
         ${CMAKE_SOURCE_DIR}/common/libs/ssd1325
         ${CMAKE_SOURCE_DIR}/common/libs/ssd1325/gfx
+        ${CMAKE_SOURCE_DIR}/common/libs/BasicLinearAlgebra
         ${CMAKE_SOURCE_DIR}/../api/include)
+        
