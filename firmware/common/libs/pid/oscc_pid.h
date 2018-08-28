@@ -8,7 +8,6 @@
 #ifndef _OSCC_PID_H_
 #define _OSCC_PID_H_
 
-#include <BasicLinearAlgebra.h>
 
 /**
  * @brief Math macro: constrain(amount, low, high).
