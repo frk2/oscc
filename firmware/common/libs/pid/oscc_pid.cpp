@@ -199,9 +199,9 @@ void update_pid() {
 	  
 	  float observ_var = 0.14; //в коде чувака было 2, но так как у нас угол это угол установки колеса то 2*37/520
  	  
- 	  KalmanUpdate(latest_mean, latest_covariance, F, G, obs_matr, curr_angle, observ_var, next_mean, next_covariance);
+ 	  //KalmanUpdate(latest_mean, latest_covariance, F, G, obs_matr, curr_angle, observ_var, next_mean, next_covariance);
 	  
-	  pid_update(&pid, setpoint, curr_angle, 0.02);
+	  pid_update(&pid, setpoint, curr_angle, delta_t_sec);
 	  
 	  publish_torque(pid.control);
 	}
