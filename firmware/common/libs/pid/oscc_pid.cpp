@@ -164,40 +164,40 @@ void update_pid() {
   
     if (enabled) {
       
-	BLA::Matrix<3, 1> next_mean;
-	BLA::Matrix<3, 3> next_covariance;
-	
-	if (!has_estimate)
-	{
-	  next_mean << curr_angle, 0.0, 0.0;
-	  next_covariance <<  1.0, 0.0, 0.0,
-			    0.0, 1.0, 0.0,
-			    0.0, 0.0, 1.0;
-	  has_estimate = true;
-	} else
-	{
-	  
-	  BLA::Matrix<3,3> F;
-	  F << 1.0, delta_t_sec, (delta_t_sec * delta_t_sec * 0.5),
-	      0.0, 1.0,  delta_t_sec,
-	      0.0, 0.0, 0.8;
-	
-	  BLA::Matrix<3, 1> G;
-	  G << (delta_t_sec * delta_t_sec * delta_t_sec / 6.0), (delta_t_sec * delta_t_sec * 0.5), delta_t_sec;
-	  
-	  BLA::Matrix<1,3> obs_matr;
-	  obs_matr << 1.0, 0.0, 0.0;
-	  
-	  float observ_var = 0.14; //в коде чувака было 2, но так как у нас угол это угол установки колеса то 2*37/520
-	  
-	  KalmanUpdate(latest_mean, latest_covariance, F, G, obs_matr, curr_angle, observ_var, next_mean, next_covariance);
+// 	BLA::Matrix<3, 1> next_mean;
+// 	BLA::Matrix<3, 3> next_covariance;
+// 	
+// 	if (!has_estimate)
+// 	{
+// 	  next_mean << curr_angle, 0.0, 0.0;
+// 	  next_covariance <<  1.0, 0.0, 0.0,
+// 			    0.0, 1.0, 0.0,
+// 			    0.0, 0.0, 1.0;
+// 	  has_estimate = true;
+// 	} else
+// 	{
+// 	  
+// 	  BLA::Matrix<3,3> F;
+// 	  F << 1.0, delta_t_sec, (delta_t_sec * delta_t_sec * 0.5),
+// 	      0.0, 1.0,  delta_t_sec,
+// 	      0.0, 0.0, 0.8;
+// 	
+// 	  BLA::Matrix<3, 1> G;
+// 	  G << (delta_t_sec * delta_t_sec * delta_t_sec / 6.0), (delta_t_sec * delta_t_sec * 0.5), delta_t_sec;
+// 	  
+// 	  BLA::Matrix<1,3> obs_matr;
+// 	  obs_matr << 1.0, 0.0, 0.0;
+// 	  
+// 	  float observ_var = 0.14; //в коде чувака было 2, но так как у нас угол это угол установки колеса то 2*37/520
+// 	  
+// 	  KalmanUpdate(latest_mean, latest_covariance, F, G, obs_matr, curr_angle, observ_var, next_mean, next_covariance);
 	  
 	  pid_update(&pid, setpoint, curr_angle, 0.02);
 	  
 	  publish_torque(pid.control);
-	}
-	latest_mean = next_mean;
-	latest_covariance = next_covariance;
+//	}
+//	latest_mean = next_mean;
+//	latest_covariance = next_covariance;
 	
     } else {
 	publish_torque(0.0);
