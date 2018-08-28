@@ -27,8 +27,6 @@ bool has_estimate= false;
 BLA::Matrix<3, 1> latest_mean;
 BLA::Matrix<3, 3> latest_covariance;
 
-int new_data = 0;
-
 
 void KalmanUpdate(
     const BLA::Matrix<3, 1> &prev_mean,
@@ -87,7 +85,6 @@ void pid_zeroize(pid_s *pid, float integral_windup_guard) {
     setpoint = 0;
     //Init Kalman filter
     has_estimate = false;
-    new_data = 0;
 }
 
 
@@ -163,9 +160,7 @@ int pid_update(pid_s *pid, float setpoint, float input, float dt) {
 }
 
 void update_pid() {
-    if (new_data)
-    {
-      new_data = 0;
+
       float delta_t_sec = 0.0;
       unsigned long curr_time = millis();
       delta_t_sec = (curr_time - last_time)/1000.0;
@@ -233,5 +228,5 @@ void update_pid() {
       DEBUG_PRINT(setpoint);
       DEBUG_PRINT(",");
       DEBUG_PRINTLN(flag);
-    }
+
 }
