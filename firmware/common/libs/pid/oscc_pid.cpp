@@ -207,12 +207,14 @@ void update_pid() {
 	latest_mean = next_mean;
 	latest_covariance = next_covariance;
       } else {
+	  publish_torque(0.0);
 	  pid_zeroize(&pid, 0);
+	  flag = 6;
       }
       
       last_time = curr_time;
 
-      int dt = (int)delta_t_sec*1000;
+      int dt = (int)(delta_t_sec*1000);
       
       DEBUG_PRINT(dt);
       DEBUG_PRINT(",");
