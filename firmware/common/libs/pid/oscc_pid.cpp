@@ -185,7 +185,7 @@ void update_pid() {
 	  has_estimate = true;
 	} else
 	{
-// 	  
+ 	  
 	  BLA::Matrix<3,3> F;
 	  F << 1.0, delta_t_sec, (delta_t_sec * delta_t_sec * 0.5),
 	      0.0, 1.0,  delta_t_sec,
@@ -198,8 +198,8 @@ void update_pid() {
 	  obs_matr << 1.0, 0.0, 0.0;
 	  
 	  float observ_var = 0.14; //в коде чувака было 2, но так как у нас угол это угол установки колеса то 2*37/520
-// 	  
-// 	  KalmanUpdate(latest_mean, latest_covariance, F, G, obs_matr, curr_angle, observ_var, next_mean, next_covariance);
+ 	  
+ 	  KalmanUpdate(latest_mean, latest_covariance, F, G, obs_matr, curr_angle, observ_var, next_mean, next_covariance);
 	  
 	  pid_update(&pid, setpoint, curr_angle, 0.02);
 	  
