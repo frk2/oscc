@@ -14,6 +14,7 @@
 double curr_angle = 0;
 double setpoint = 0;
 int enabled = 0;
+int can_use_diff = 0;
 pid_s pid = {};
 
 unsigned long last_time = 0;
@@ -82,18 +83,17 @@ void pid_zeroize(pid_s *pid, float integral_windup_guard) {
     pid->windup_guard = integral_windup_guard;
     pid->control = 0;
     setpoint = 0;
+    can_use_diff = 0;
 }
 
 
 int pid_update(pid_s *pid, float setpoint, float input, float dt) {
-    float diff;
+    float diff = 0.0;
 //    float p_term;
 //    float i_term;
 //    float d_term;
 
     float curr_error = setpoint - input;
-
-    static int count = 0;
 
     if (dt <= 0) {
         return PID_ERROR;
@@ -115,7 +115,16 @@ int pid_update(pid_s *pid, float setpoint, float input, float dt) {
         
     }
     else if (fabs(curr_error) >= 2 && fabs(curr_error) <= 5) {
-        pid->int_error += 0.5 * (curr_error * dt);
+      
+	float last_int_error = pid->int_error;
+        pid->int_error += 0.5*(curr_error * dt);
+        flag = 3;
+	    
+	if (fabs(pid->int_error * pid->integral_gain) > INT_LIMIT)
+        {
+           pid->int_error = last_int_error; //reset integreation error under limit 
+           flag = 7;
+        }
     }
     else if (fabs(curr_error) > 5) {
         pid->int_error = 0;
@@ -130,7 +139,7 @@ int pid_update(pid_s *pid, float setpoint, float input, float dt) {
 //        pid->int_error = pid->windup_guard;
 //    }
 
-    if (count > 0) {
+    if (can_use_diff) {
         // differentiation
         diff = ((curr_error - pid->prev_error) / dt);
     }
@@ -151,7 +160,7 @@ int pid_update(pid_s *pid, float setpoint, float input, float dt) {
 
     // save current error as previous error for next iteration
     pid->prev_error = curr_error;
-    count++;
+    can_use_diff = 1;
 
     return PID_SUCCESS;
 }

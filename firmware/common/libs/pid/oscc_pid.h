@@ -89,6 +89,7 @@ void update_pid();
 extern double setpoint;
 extern double curr_angle;
 extern int enabled;
+extern int can_use_diff;
 
 extern pid_s pid;
 

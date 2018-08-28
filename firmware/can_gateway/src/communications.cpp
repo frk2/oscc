@@ -36,6 +36,7 @@ void check_for_module_reports(void) {
             parse_throttle_report(rx_frame.data);
         } else if (rx_frame.id == OSCC_STEERING_ANGLE_COMMAND_CAN_ID) {
             memcpy(&setpoint, rx_frame.data + 2, 4);
+	    can_use_diff = 0;
         } else if (rx_frame.id == OSCC_STEERING_ENABLE_CAN_ID) {
             enabled = 1;
         } else if (rx_frame.id == OSCC_STEERING_DISABLE_CAN_ID || rx_frame.id == OSCC_FAULT_REPORT_CAN_ID) {
