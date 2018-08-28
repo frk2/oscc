@@ -9,7 +9,7 @@
 #include "oscc_pid.h"
 
 #define MAX_TORQUE 0.22
-#define INT_LIMIT 0.2
+#define INT_LIMIT 0.22
 
 double curr_angle = 0;
 double setpoint = 0;
