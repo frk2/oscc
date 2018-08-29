@@ -143,9 +143,7 @@ int pid_update(pid_s *pid, float setpoint, float input, float dt) {
 
     if (can_use_diff) {
         // differentiation
-        float new_diff = ((curr_error - pid->prev_error) / dt);
-	diff = (new_diff + pid->prev_diff) / 2.0;
-	pid->prev_diff = new_diff;
+        diff = ((curr_error - pid->prev_error) / dt);
     }
 
     // scaling
@@ -228,15 +226,15 @@ void update_pid() {
       DEBUG_PRINT(",");
       DEBUG_PRINT(curr_angle);
       DEBUG_PRINT(",");
-      DEBUG_PRINT(pid.control);
+      DEBUG_PRINT(pid.control*10);
       DEBUG_PRINT(",");
       DEBUG_PRINT(pid.prev_error  );
       DEBUG_PRINT(",");
-      DEBUG_PRINT(p_term);
+      DEBUG_PRINT(p_term*10);
       DEBUG_PRINT(",");
-      DEBUG_PRINT(i_term);
+      DEBUG_PRINT(i_term*10);
       DEBUG_PRINT(",");
-      DEBUG_PRINT(d_term);
+      DEBUG_PRINT(d_term*10);
       DEBUG_PRINT(",");
       DEBUG_PRINT(setpoint);
       DEBUG_PRINT(",");

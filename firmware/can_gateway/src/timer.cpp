@@ -11,5 +11,5 @@
 
 
 void start_timer() {
-    timer1_init(70, update_pid);
+    timer1_init(100, update_pid);
 }
