@@ -51,6 +51,8 @@ typedef struct {
     float control; /* Control. */
 
     float prev_steering_angle; /* Previous steering angle. */
+    
+    float prev_diff; /*Previous diff of error */
 } pid_s;
 
 
@@ -90,6 +92,7 @@ extern double setpoint;
 extern double curr_angle;
 extern int enabled;
 extern int can_use_diff;
+extern int new_data;
 
 extern pid_s pid;
 

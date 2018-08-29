@@ -15,6 +15,7 @@ double curr_angle = 0;
 double setpoint = 0;
 int enabled = 0;
 int can_use_diff = 0;
+int new_data = 0;
 pid_s pid = {};
 
 unsigned long last_time = 0;
@@ -82,6 +83,7 @@ void pid_zeroize(pid_s *pid, float integral_windup_guard) {
     pid->prev_steering_angle = 0;
     pid->windup_guard = integral_windup_guard;
     pid->control = 0;
+    pid->prev_diff = 0;
     setpoint = 0;
     can_use_diff = 0;
 }
@@ -141,7 +143,9 @@ int pid_update(pid_s *pid, float setpoint, float input, float dt) {
 
     if (can_use_diff) {
         // differentiation
-        diff = ((curr_error - pid->prev_error) / dt);
+        float new_diff = ((curr_error - pid->prev_error) / dt);
+	diff = (new_diff + pid->prev_diff) / 2.0;
+	pid->prev_diff = new_diff;
     }
 
     // scaling
@@ -166,72 +170,76 @@ int pid_update(pid_s *pid, float setpoint, float input, float dt) {
 }
 
 void update_pid() {
-    
-    float delta_t_sec = 0.0;
-    unsigned long curr_time = millis();
-    delta_t_sec = (curr_time - last_time)/1000.0;
+    if (new_data)
+    {
+      new_data = 0;
   
-    if (enabled) {
-      
-	BLA::Matrix<3, 1> next_mean;
-	BLA::Matrix<3, 3> next_covariance;
-	
-	if (!has_estimate)
-	{
-	  next_mean << curr_angle, 0.0, 0.0;
-	  next_covariance <<  1.0, 0.0, 0.0,
-			    0.0, 1.0, 0.0,
-			    0.0, 0.0, 1.0;
-	  has_estimate = true;
-	} else
-	{
- 	  
-	  BLA::Matrix<3,3> F;
-	  F << 1.0, delta_t_sec, (delta_t_sec * delta_t_sec * 0.5),
-	      0.0, 1.0,  delta_t_sec,
-	      0.0, 0.0, 0.8;
-	
-	  BLA::Matrix<3, 1> G;
-	  G << (delta_t_sec * delta_t_sec * delta_t_sec / 6.0), (delta_t_sec * delta_t_sec * 0.5), delta_t_sec;
-	  
-	  BLA::Matrix<1,3> obs_matr;
-	  obs_matr << 1.0, 0.0, 0.0;
-	  
-	  float observ_var = 0.14; //в коде чувака было 2, но так как у нас угол это угол установки колеса то 2*37/520
- 	  
- 	  //KalmanUpdate(latest_mean, latest_covariance, F, G, obs_matr, curr_angle, observ_var, next_mean, next_covariance);
-	  
-	  pid_update(&pid, setpoint, curr_angle, delta_t_sec);
-	  
-	  publish_torque(pid.control);
-	}
-	latest_mean = next_mean;
-	latest_covariance = next_covariance;
-	
-    } else {
-	publish_torque(0.0);
-        pid_zeroize(&pid, 0);
-    }
+      float delta_t_sec = 0.0;
+      unsigned long curr_time = millis();
+      delta_t_sec = (curr_time - last_time)/1000.0;
     
-   last_time = curr_time;
+      if (enabled) {
+	
+	  BLA::Matrix<3, 1> next_mean;
+	  BLA::Matrix<3, 3> next_covariance;
+	  
+	  if (!has_estimate)
+	  {
+	    next_mean << curr_angle, 0.0, 0.0;
+	    next_covariance <<  1.0, 0.0, 0.0,
+			      0.0, 1.0, 0.0,
+			      0.0, 0.0, 1.0;
+	    has_estimate = true;
+	  } else
+	  {
+	    
+	    BLA::Matrix<3,3> F;
+	    F << 1.0, delta_t_sec, (delta_t_sec * delta_t_sec * 0.5),
+		0.0, 1.0,  delta_t_sec,
+		0.0, 0.0, 0.8;
+	  
+	    BLA::Matrix<3, 1> G;
+	    G << (delta_t_sec * delta_t_sec * delta_t_sec / 6.0), (delta_t_sec * delta_t_sec * 0.5), delta_t_sec;
+	    
+	    BLA::Matrix<1,3> obs_matr;
+	    obs_matr << 1.0, 0.0, 0.0;
+	    
+	    float observ_var = 0.14; //в коде чувака было 2, но так как у нас угол это угол установки колеса то 2*37/520
+	    
+	    //KalmanUpdate(latest_mean, latest_covariance, F, G, obs_matr, curr_angle, observ_var, next_mean, next_covariance);
+	    
+	    pid_update(&pid, setpoint, curr_angle, delta_t_sec);
+	    
+	    publish_torque(pid.control);
+	  }
+	  latest_mean = next_mean;
+	  latest_covariance = next_covariance;
+	  
+      } else {
+	  publish_torque(0.0);
+	  pid_zeroize(&pid, 0);
+      }
+      
+      last_time = curr_time;
 
-   int dt = (int)(delta_t_sec*1000);
+      int dt = (int)(delta_t_sec*1000);
 
-   DEBUG_PRINT(dt);
-   DEBUG_PRINT(",");
-   DEBUG_PRINT(curr_angle);
-   DEBUG_PRINT(",");
-   DEBUG_PRINT(pid.control);
-   DEBUG_PRINT(",");
-   DEBUG_PRINT(pid.prev_error  );
-   DEBUG_PRINT(",");
-   DEBUG_PRINT(p_term);
-   DEBUG_PRINT(",");
-   DEBUG_PRINT(i_term);
-   DEBUG_PRINT(",");
-   DEBUG_PRINT(d_term);
-   DEBUG_PRINT(",");
-   DEBUG_PRINT(setpoint);
-   DEBUG_PRINT(",");
-   DEBUG_PRINTLN(flag);
+      DEBUG_PRINT(dt);
+      DEBUG_PRINT(",");
+      DEBUG_PRINT(curr_angle);
+      DEBUG_PRINT(",");
+      DEBUG_PRINT(pid.control);
+      DEBUG_PRINT(",");
+      DEBUG_PRINT(pid.prev_error  );
+      DEBUG_PRINT(",");
+      DEBUG_PRINT(p_term);
+      DEBUG_PRINT(",");
+      DEBUG_PRINT(i_term);
+      DEBUG_PRINT(",");
+      DEBUG_PRINT(d_term);
+      DEBUG_PRINT(",");
+      DEBUG_PRINT(setpoint);
+      DEBUG_PRINT(",");
+      DEBUG_PRINTLN(flag);
+    }
 }
