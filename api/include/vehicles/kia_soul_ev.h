@@ -32,6 +32,12 @@
 // ****************************************************************************
 
 /*
+ * @brief ID of the Kia Soul's OBD gear state CAN frame.
+ *
+ */
+#define KIA_SOUL_OBD_GEAR_STATE_CAN_ID ( 0x200 )
+
+/*
  * @brief ID of the Kia Soul's OBD steering wheel angle CAN frame.
  *
  */
