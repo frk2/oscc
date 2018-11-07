@@ -12,7 +12,6 @@
 #include "mcp_can.h"
 #include "oscc_can.h"
 #include "vehicles.h"
-#include "oscc_pid.h"
 
 #include "debug.h"
 
@@ -21,6 +20,22 @@ static void parse_brake_report(uint8_t *data);
 static void parse_steering_report(uint8_t *data);
 
 static void parse_throttle_report(uint8_t *data);
+
+static void process_fault_report(
+    const uint8_t * const data )
+{
+    if ( data != NULL )
+    {
+        const oscc_fault_report_s * const fault_report =
+                (oscc_fault_report_s *) data;
+
+
+        DEBUG_PRINT( "Fault report received from: " );
+        DEBUG_PRINT( fault_report->fault_origin_id );
+        DEBUG_PRINT( "  DTCs: ");
+        DEBUG_PRINTLN( fault_report->dtcs );
+    }
+}
 
 
 void check_for_module_reports(void) {
@@ -34,13 +49,6 @@ void check_for_module_reports(void) {
             parse_steering_report(rx_frame.data);
         } else if (rx_frame.id == OSCC_THROTTLE_REPORT_CAN_ID) {
             parse_throttle_report(rx_frame.data);
-        } else if (rx_frame.id == OSCC_STEERING_ANGLE_COMMAND_CAN_ID) {
-            memcpy(&setpoint, rx_frame.data + 2, 4);
-	    can_use_diff = 0;
-        } else if (rx_frame.id == OSCC_STEERING_ENABLE_CAN_ID) {
-            enabled = 1;
-        } else if (rx_frame.id == OSCC_STEERING_DISABLE_CAN_ID || rx_frame.id == OSCC_FAULT_REPORT_CAN_ID) {
-            enabled = 0;
         }
     }
 }
@@ -53,15 +61,14 @@ void republish_obd_frames_to_control_can_bus(void) {
     static unsigned long prev_time, curr_time;
     curr_time = millis();
 
-
     if (ret == CAN_RX_FRAME_AVAILABLE) {
         if ((rx_frame.id == KIA_SOUL_OBD_STEERING_WHEEL_ANGLE_CAN_ID) || 
             (rx_frame.id == KIA_SOUL_OBD_WHEEL_SPEED_CAN_ID) || 
             (rx_frame.id == KIA_SOUL_OBD_GEAR_STATE_CAN_ID)) {
-            if (rx_frame.id == KIA_SOUL_OBD_STEERING_WHEEL_ANGLE_CAN_ID) {
-                curr_angle = rx_frame.data[0] | rx_frame.data[1] << 8;
-                curr_angle *= -0.1 * 37 / 520;
-	            new_data = 1;
+        
+            if (rx_frame.id == KIA_SOUL_OBD_WHEEL_SPEED_CAN_ID) {
+                // DEBUG_PRINTLN(curr_time - prev_time);
+                prev_time = curr_time;
             }
             cli();
             g_control_can.sendMsgBuf(
@@ -70,28 +77,9 @@ void republish_obd_frames_to_control_can_bus(void) {
                     sizeof(rx_frame),
                     (uint8_t * ) & rx_frame.data);
             sei();
-            prev_time = curr_time;
         }
     }
 }
-
-void publish_torque(float torque) {
-    can_frame_s tx_frame;
-
-    memset(&tx_frame, 0, sizeof(tx_frame));
-    tx_frame.data[0] = OSCC_MAGIC_BYTE_0;
-    tx_frame.data[1] = OSCC_MAGIC_BYTE_1;
-
-    memcpy(tx_frame.data + 2, (unsigned char *) &torque, 4);
-    cli();
-    g_control_can.sendMsgBuf(
-            OSCC_STEERING_COMMAND_CAN_ID,
-            CAN_STANDARD,
-            sizeof(tx_frame),
-            (uint8_t * ) & tx_frame.data);
-    sei();
-}
-
 
 static void parse_brake_report(uint8_t *data) {
     oscc_brake_report_s *report = (oscc_brake_report_s *) data;
