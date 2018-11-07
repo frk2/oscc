@@ -5,6 +5,7 @@
 
 
 #include <Arduino.h>
+#include <vehicles.h>
 
 #include "can_protocols/fault_can_protocol.h"
 #include "can_protocols/steering_can_protocol.h"
@@ -15,6 +16,7 @@
 #include "oscc_can.h"
 #include "oscc_serial.h"
 #include "oscc_timer.h"
+#include "oscc_pid.h"
 
 
 void init_globals( void )
@@ -55,6 +57,7 @@ void init_communication_interfaces( void )
     g_control_can.init_Mask( 0, 0, 0x7F0 ); // Filter for 0x0N0 to 0x0NF
     g_control_can.init_Filt( 0, 0, OSCC_STEERING_CAN_ID_INDEX );
     g_control_can.init_Filt( 1, 0, OSCC_FAULT_CAN_ID_INDEX );
+    g_control_can.init_Filt( 3, 0, KIA_SOUL_OBD_STEERING_WHEEL_ANGLE_CAN_ID);
     // Accept only CAN Disable when buffer overflow occurs in buffer 0
     g_control_can.init_Mask( 1, 0, 0x7FF ); // Filter for one CAN ID
     g_control_can.init_Filt( 2, 1, OSCC_STEERING_DISABLE_CAN_ID );
@@ -64,4 +67,5 @@ void init_communication_interfaces( void )
 void start_timers( void )
 {
     timer1_init( OSCC_REPORT_STEERING_PUBLISH_FREQ_IN_HZ, publish_steering_report );
+    timer2_init(50, update_pid);
 }

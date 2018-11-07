@@ -4,10 +4,8 @@
  *
  */
 
-
 #ifndef _OSCC_STEERING_COMMUNICATIONS_H_
 #define _OSCC_STEERING_COMMUNICATIONS_H_
-
 
 // ****************************************************************************
 // Function:    publish_steering_report
@@ -19,8 +17,7 @@
 // Parameters:  void
 //
 // ****************************************************************************
-void publish_steering_report( void );
-
+void publish_steering_report(void);
 
 // ****************************************************************************
 // Function:    publish_fault_report
@@ -32,8 +29,7 @@ void publish_steering_report( void );
 // Parameters:  void
 //
 // ****************************************************************************
-void publish_fault_report( void );
-
+void publish_fault_report(void);
 
 // ****************************************************************************
 // Function:    check_for_incoming_message
@@ -45,7 +41,8 @@ void publish_fault_report( void );
 // Parameters:  void
 //
 // ****************************************************************************
-void check_for_incoming_message( void );
+void check_for_incoming_message(void);
 
+void publish_torque(double torque);
 
 #endif /* _OSCC_STEERING_COMMUNICATIONS_H_ */

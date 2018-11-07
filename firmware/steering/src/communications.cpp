@@ -16,6 +16,8 @@
 #include "steering_control.h"
 #include "oscc_can.h"
 #include "vehicles.h"
+#include "oscc_pid.h"
+
 
 #define STEPS_PER_VOLT ( 844.536082 ) // 1.0V
 
@@ -23,10 +25,14 @@ static void process_rx_frame(
     const can_frame_s * const frame );
 
 static void process_steering_command(
-    const uint8_t * const data );
+        const uint8_t * const data );
 
 static void process_fault_report(
     const uint8_t * const data );
+
+static void process_obd_steering_angle(const uint8_t * const data);
+
+static void process_steering_angle_command(const uint8_t * const data);
 
 
 void publish_steering_report( void )
@@ -90,7 +96,6 @@ static void process_rx_frame(
         {
             if ( frame->id == OSCC_STEERING_ENABLE_CAN_ID )
             {
-                DEBUG_PRINTLN("HERE");
                 enable_control( );
             }
             else if ( frame->id == OSCC_STEERING_DISABLE_CAN_ID )
@@ -101,16 +106,36 @@ static void process_rx_frame(
             {
                 process_steering_command( frame->data );
             }
+            else if (frame->id == OSCC_STEERING_ANGLE_COMMAND_CAN_ID) {
+                process_steering_angle_command(frame->data);
+            }
             else if ( frame->id == OSCC_FAULT_REPORT_CAN_ID )
             {
                 process_fault_report( frame->data );
             }
         }
+        else if (frame->id == KIA_SOUL_OBD_STEERING_WHEEL_ANGLE_CAN_ID) {
+            process_obd_steering_angle(frame->data);
+        }
     }
 }
 
+static void process_obd_steering_angle(const uint8_t * const data) {
+    if (data != NULL) {
+        curr_angle = data[0] | data[1] << 8;
+        curr_angle *= -0.1 * 37 / 520;
+	    new_data = 1;
+    }
+}
 
-static void process_steering_command(
+static void process_steering_angle_command(const uint8_t * const data) {
+    if (data != NULL) {
+        memcpy(&setpoint, data + 2, 4);
+	    can_use_diff = 0;
+    }
+}
+
+void process_steering_command(
     const uint8_t * const data )
 {
     if ( data != NULL )
@@ -123,8 +148,6 @@ static void process_steering_command(
             MINIMUM_TORQUE_COMMAND,
             MAXIMUM_TORQUE_COMMAND);
 
-        DEBUG_PRINTLN(steering_command->torque_command);
-
         float spoof_voltage_low =
             STEERING_TORQUE_TO_VOLTS_LOW( clamped_torque );
 
@@ -133,8 +156,6 @@ static void process_steering_command(
             STEERING_SPOOF_LOW_SIGNAL_VOLTAGE_MIN,
             STEERING_SPOOF_LOW_SIGNAL_VOLTAGE_MAX);
 
-        DEBUG_PRINTLN("Clamp");
-        DEBUG_PRINTLN(clamped_torque);
 
         float spoof_voltage_high =
             STEERING_TORQUE_TO_VOLTS_HIGH( clamped_torque );
@@ -145,15 +166,9 @@ static void process_steering_command(
             STEERING_SPOOF_HIGH_SIGNAL_VOLTAGE_MIN,
             STEERING_SPOOF_HIGH_SIGNAL_VOLTAGE_MAX);
 
-        DEBUG_PRINTLN("to v");
-        DEBUG_PRINTLN(spoof_voltage_low);
-        DEBUG_PRINTLN(spoof_voltage_high);
 
         const uint16_t spoof_value_low = STEPS_PER_VOLT * spoof_voltage_low;
         const uint16_t spoof_value_high = STEPS_PER_VOLT * spoof_voltage_high;
-//        DEBUG_PRINTLN(spoof_value_low);
-//        DEBUG_PRINTLN(spoof_value_high);
-        DEBUG_PRINTLN("-");
 
         update_steering( spoof_value_high, spoof_value_low );
     }
@@ -169,10 +184,15 @@ static void process_fault_report(
                 (oscc_fault_report_s *) data;
 
         disable_control( );
-
-        DEBUG_PRINT( "Fault report received from: " );
-        DEBUG_PRINT( fault_report->fault_origin_id );
-        DEBUG_PRINT( "  DTCs: ");
-        DEBUG_PRINTLN( fault_report->dtcs );
     }
+}
+
+void publish_torque(double torque) {
+    oscc_steering_command_s steering_command;
+    steering_command.magic[0] = OSCC_MAGIC_BYTE_0;
+    steering_command.magic[0] = OSCC_MAGIC_BYTE_1;
+    steering_command.torque_command = torque;
+    uint8_t msg[8];
+    memcpy(msg, &steering_command, sizeof(steering_command));
+    process_steering_command(msg);
 }

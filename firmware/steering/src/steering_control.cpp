@@ -17,8 +17,7 @@
 #include "oscc_check.h"
 #include "steering_control.h"
 #include "vehicles.h"
-
-
+#include "oscc_pid.h"
 
 
 static void read_torque_sensor(
@@ -71,6 +70,7 @@ void check_for_faults( void )
         if( inputs_grounded == true )
         {
             disable_control( );
+            enabled = 0;
 
             DTC_SET(
                 g_steering_control_state.dtcs,
@@ -84,6 +84,7 @@ void check_for_faults( void )
         else if( abs( filtered_diff ) > TORQUE_DIFFERENCE_OVERRIDE_THRESHOLD )
         {
             disable_control( );
+            enabled = 0;
 
             DTC_SET(
                 g_steering_control_state.dtcs,
@@ -151,8 +152,7 @@ void enable_control( void )
         sei();
 
         g_steering_control_state.enabled = true;
-
-        DEBUG_PRINTLN( "Control enabled" );
+        enabled = 1;
     }
 }
 
@@ -173,6 +173,7 @@ void disable_control( void )
         sei();
 
         g_steering_control_state.enabled = false;
+        enabled = 0;
 
 #ifdef STEERING_OVERRIDE
         filtered_diff = 0;
