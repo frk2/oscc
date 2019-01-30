@@ -154,6 +154,7 @@ typedef struct
     uint8_t dtcs; /*!< Bitfield of DTCs present in the module. */
 
     uint8_t reserved[3]; /*!< Reserved. */
+    float torque_command;
 } oscc_steering_report_s;
 
 #pragma pack(pop)

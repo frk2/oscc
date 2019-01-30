@@ -40,6 +40,7 @@ typedef struct
                                manually turned by operator. */
 
     uint8_t dtcs; /* Bitfield of faults present in the module. */
+    float torque;
 } steering_control_state_s;
 
 

@@ -7,6 +7,7 @@
 #include <Arduino.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <steering_control.h>
 
 #include "can_protocols/steering_can_protocol.h"
 #include "communications.h"
@@ -39,11 +40,11 @@ void check_for_faults( void )
     static condition_state_s grounded_fault_state = CONDITION_STATE_INIT;
 
     steering_torque_s torque;
-
+    read_torque_sensor(&torque);
+    g_steering_control_state.torque = STEERING_VOLTS_HIGH_TO_TORQUE(torque.high);
     if ( ( g_steering_control_state.enabled == true )
         || (g_steering_control_state.dtcs > 0) )
     {
-        read_torque_sensor(&torque);
 
 #ifdef STEERING_OVERRIDE
         uint16_t unfiltered_diff = abs( ( int )torque.high - ( int )torque.low );

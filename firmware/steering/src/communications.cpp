@@ -5,6 +5,8 @@
 
 
 #include <stdint.h>
+#include <can_protocols/steering_can_protocol.h>
+#include <steering_control.h>
 
 #include "can_protocols/fault_can_protocol.h"
 #include "can_protocols/steering_can_protocol.h"
@@ -36,6 +38,7 @@ void publish_steering_report( void )
     steering_report.enabled = (uint8_t) g_steering_control_state.enabled;
     steering_report.operator_override = (uint8_t) g_steering_control_state.operator_override;
     steering_report.dtcs = g_steering_control_state.dtcs;
+    steering_report.torque_command = (float) g_steering_control_state.torque;
 
     cli();
     g_control_can.sendMsgBuf(
