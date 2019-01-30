@@ -151,9 +151,9 @@ typedef struct
                                 * Non-zero value means an operator has physically overridden
                                 * the system. */
 
-    uint8_t dtcs; /*!< Bitfield of DTCs present in the module. */
+    //uint8_t dtcs; /*!< Bitfield of DTCs present in the module. */
 
-    uint8_t reserved[3]; /*!< Reserved. */
+    //uint8_t reserved[3]; /*!< Reserved. */
     float torque_command;
 } oscc_steering_report_s;
 

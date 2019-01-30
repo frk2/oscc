@@ -42,6 +42,7 @@ void check_for_faults( void )
     steering_torque_s torque;
     read_torque_sensor(&torque);
     g_steering_control_state.torque = STEERING_VOLTS_HIGH_TO_TORQUE(torque.high);
+
     if ( ( g_steering_control_state.enabled == true )
         || (g_steering_control_state.dtcs > 0) )
     {

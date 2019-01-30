@@ -118,30 +118,29 @@ static void parse_steering_report( uint8_t *data )
         g_display_state.status_screen.steering = MODULE_STATUS_DISABLED;
     }
 
-
+/*
     if ( report->dtcs != 0 )
     {
         g_display_state.status_screen.steering = MODULE_STATUS_ERROR;
     }
-
 
     if ( DTC_CHECK(report->dtcs, OSCC_STEERING_DTC_INVALID_SENSOR_VAL) != 0 )
     {
         g_display_state.dtc_screen.steering[OSCC_STEERING_DTC_INVALID_SENSOR_VAL] = true;
     }
     else
-    {
+    {*/
         g_display_state.dtc_screen.steering[OSCC_STEERING_DTC_INVALID_SENSOR_VAL] = false;
-    }
-
+    //}
+/*
     if ( DTC_CHECK(report->dtcs, OSCC_STEERING_DTC_OPERATOR_OVERRIDE) != 0 )
     {
         g_display_state.dtc_screen.steering[OSCC_STEERING_DTC_OPERATOR_OVERRIDE] = true;
     }
     else
     {
-        g_display_state.dtc_screen.steering[OSCC_STEERING_DTC_OPERATOR_OVERRIDE] = false;
-    }
+  */      g_display_state.dtc_screen.steering[OSCC_STEERING_DTC_OPERATOR_OVERRIDE] = false;
+    //}
 }
 
 
