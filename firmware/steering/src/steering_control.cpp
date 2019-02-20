@@ -20,6 +20,7 @@
 #include "vehicles.h"
 
 
+unsigned long last_steering_update_time = 0;
 
 
 static void read_torque_sensor(
@@ -199,4 +200,45 @@ static void read_torque_sensor(
     value->high = analogRead( PIN_TORQUE_SENSOR_HIGH ) << 2;
     value->low = analogRead( PIN_TORQUE_SENSOR_LOW ) << 2;
     sei();
+}
+
+void update_steering_pid() {
+  if (new_data)
+  {
+    new_data = 0;
+
+    float delta_t_sec = 0.0;
+    unsigned long curr_time = millis();
+    delta_t_sec = (curr_time - last_steering_update_time)/1000.0;
+
+    if (g_steering_control_state.enabled) {
+        pid_update(&g_steering_pid, setpoint, curr_angle, delta_t_sec);
+        apply_torque(g_steering_pid.control);
+    } else {
+      apply_torque(0.0);
+      pid_zeroize(&g_steering_pid, 0);
+    }
+
+  last_steering_update_time = curr_time;
+
+    int dt = (int)(delta_t_sec*1000);
+
+    DEBUG_PRINT(dt);
+    DEBUG_PRINT(",");
+    DEBUG_PRINT(curr_angle);
+    DEBUG_PRINT(",");
+    DEBUG_PRINT(pid.control*10);
+    DEBUG_PRINT(",");
+    DEBUG_PRINT(pid.prev_error  );
+    DEBUG_PRINT(",");
+    DEBUG_PRINT(p_term*10);
+    DEBUG_PRINT(",");
+    DEBUG_PRINT(i_term*10);
+    DEBUG_PRINT(",");
+    DEBUG_PRINT(d_term*10);
+    DEBUG_PRINT(",");
+    DEBUG_PRINT(setpoint);
+    DEBUG_PRINT(",");
+    DEBUG_PRINTLN(flag);
+  }
 }

@@ -12,6 +12,8 @@
 #include <stdint.h>
 
 
+
+
 /**
  * @brief Torque values.
  *
@@ -100,5 +102,5 @@ void enable_control( void );
 // *****************************************************
 void disable_control( void );
 
-
+void update_steering_pid ( void );
 #endif /* _OSCC_STEERING_CONTROL_H_ */

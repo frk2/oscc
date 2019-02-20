@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <can_protocols/steering_can_protocol.h>
 #include <steering_control.h>
+#include <oscc_pid.h>
 
 #include "can_protocols/fault_can_protocol.h"
 #include "can_protocols/steering_can_protocol.h"
@@ -27,6 +28,10 @@ static void process_steering_command(
 
 static void process_fault_report(
     const uint8_t * const data );
+
+static void process_obd_steering_angle(const uint8_t * const data);
+
+static void process_steering_angle_command(const uint8_t * const data);
 
 
 void publish_steering_report( void )
@@ -102,14 +107,34 @@ static void process_rx_frame(
             {
                 process_steering_command( frame->data );
             }
+            else if (frame->id == OSCC_STEERING_ANGLE_COMMAND_CAN_ID) {
+                process_steering_angle_command(frame->data);
+            }
             else if ( frame->id == OSCC_FAULT_REPORT_CAN_ID )
             {
                 process_fault_report( frame->data );
             }
         }
+        else if (frame->id == KIA_SOUL_OBD_STEERING_WHEEL_ANGLE_CAN_ID) {
+            process_obd_steering_angle(frame->data);
+        }
     }
 }
 
+
+static void process_obd_steering_angle(const uint8_t * const data) {
+    if (data != NULL) {
+        curr_angle = data[0] | data[1] << 8;
+        curr_angle *= -0.1 * 37 / 520;
+        new_data = 1;
+    }
+}
+
+static void process_steering_angle_command(const uint8_t * const data) {
+    if (data != NULL) {
+        setpoint = *(data+2);
+    }
+}
 
 static void process_steering_command(
     const uint8_t * const data )
@@ -118,33 +143,37 @@ static void process_steering_command(
     {
         const oscc_steering_command_s * const steering_command =
                 (oscc_steering_command_s *) data;
+        apply_torque(steering_command->torque_command);
 
-        const float clamped_torque = CONSTRAIN(
-            steering_command->torque_command * MAXIMUM_TORQUE_COMMAND,
-            MINIMUM_TORQUE_COMMAND,
-            MAXIMUM_TORQUE_COMMAND);
-
-        float spoof_voltage_low =
-            STEERING_TORQUE_TO_VOLTS_LOW( clamped_torque );
-
-        spoof_voltage_low = CONSTRAIN(
-            spoof_voltage_low,
-            STEERING_SPOOF_LOW_SIGNAL_VOLTAGE_MIN,
-            STEERING_SPOOF_LOW_SIGNAL_VOLTAGE_MAX);
-
-        float spoof_voltage_high =
-            STEERING_TORQUE_TO_VOLTS_HIGH( clamped_torque );
-
-        spoof_voltage_high = CONSTRAIN(
-            spoof_voltage_high,
-            STEERING_SPOOF_HIGH_SIGNAL_VOLTAGE_MIN,
-            STEERING_SPOOF_HIGH_SIGNAL_VOLTAGE_MAX);
-
-        const uint16_t spoof_value_low = STEPS_PER_VOLT * spoof_voltage_low;
-        const uint16_t spoof_value_high = STEPS_PER_VOLT * spoof_voltage_high;
-
-        update_steering( spoof_value_high, spoof_value_low );
     }
+}
+
+void apply_torque(float torque_command) {
+  const float clamped_torque = CONSTRAIN(
+    torque_command * MAXIMUM_TORQUE_COMMAND,
+    MINIMUM_TORQUE_COMMAND,
+    MAXIMUM_TORQUE_COMMAND);
+
+  float spoof_voltage_low =
+    STEERING_TORQUE_TO_VOLTS_LOW( clamped_torque );
+
+  spoof_voltage_low = CONSTRAIN(
+    spoof_voltage_low,
+    STEERING_SPOOF_LOW_SIGNAL_VOLTAGE_MIN,
+    STEERING_SPOOF_LOW_SIGNAL_VOLTAGE_MAX);
+
+  float spoof_voltage_high =
+    STEERING_TORQUE_TO_VOLTS_HIGH( clamped_torque );
+
+  spoof_voltage_high = CONSTRAIN(
+    spoof_voltage_high,
+    STEERING_SPOOF_HIGH_SIGNAL_VOLTAGE_MIN,
+    STEERING_SPOOF_HIGH_SIGNAL_VOLTAGE_MAX);
+
+  const uint16_t spoof_value_low = STEPS_PER_VOLT * spoof_voltage_low;
+  const uint16_t spoof_value_high = STEPS_PER_VOLT * spoof_voltage_high;
+
+  update_steering( spoof_value_high, spoof_value_low );
 }
 
 

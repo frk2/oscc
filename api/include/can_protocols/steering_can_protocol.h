@@ -45,6 +45,12 @@
 #define OSCC_STEERING_REPORT_CAN_ID (0x83)
 
 /*
+ * @brief Steering command angle message (CAN frame) ID.
+ *
+*/
+#define OSCC_STEERING_ANGLE_COMMAND_CAN_ID (0x84)
+
+/*
  * @brief Steering report message (CAN frame) length.
  *
  */
