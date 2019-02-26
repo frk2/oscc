@@ -5,6 +5,7 @@
 
 
 #include <Arduino.h>
+#include <oscc_pid.h>
 
 #include "can_protocols/fault_can_protocol.h"
 #include "can_protocols/steering_can_protocol.h"
@@ -21,10 +22,13 @@ void init_globals( void )
     g_steering_control_state.enabled = false;
     g_steering_control_state.operator_override = false;
     g_steering_control_state.dtcs = 0;
-    pid_zeroize(&g_steering_pid, 0);
-    g_steering_pid.proportional_gain = 0.06;
-    g_steering_pid.derivative_gain = 0.008;
-    g_steering_pid.integral_gain = 0.8;
+    g_steering_pid.min_control = -0.24;
+    g_steering_pid.max_control = 0.24;
+    g_steering_pid.proportional_gain = 0.08;
+    g_steering_pid.derivative_gain = 0.01;
+    g_steering_pid.integral_gain = 0.1;
+    g_steering_pid.windup_guard = 2.0;
+    pid_zeroize(&g_steering_pid, g_steering_pid.windup_guard);
     curr_angle = 0.0;
     setpoint = 0.0;
     new_data = false;

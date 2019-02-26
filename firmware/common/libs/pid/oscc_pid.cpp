@@ -5,7 +5,7 @@
 
 
 #include "oscc_pid.h"
-
+#include "vehicles.h"
 
 void pid_zeroize( pid_s* pid, float integral_windup_guard )
 {
@@ -56,7 +56,7 @@ int pid_update( pid_s* pid, float setpoint, float input, float dt )
     d_term = (pid->derivative_gain   * diff);
 
     // summation of terms
-    pid->control = p_term + i_term - d_term;
+    pid->control = CONSTRAIN(p_term + i_term - d_term, pid->min_control, pid->max_control);
 
     // save current error as previous error for next iteration
     pid->prev_input = input;

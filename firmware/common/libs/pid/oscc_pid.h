@@ -34,6 +34,8 @@
  */
 typedef struct
 {
+    float min_control;
+    float max_control;
     float windup_guard; /* Windup guard. */
 
     float proportional_gain; /* Proportional gain. */

@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <steering_control.h>
+#include <oscc_pid.h>
 
 #include "can_protocols/steering_can_protocol.h"
 #include "communications.h"
@@ -216,7 +217,7 @@ void update_steering_pid() {
         apply_torque(g_steering_pid.control);
     } else {
       apply_torque(0.0);
-      pid_zeroize(&g_steering_pid, 0);
+      pid_zeroize(&g_steering_pid, g_steering_pid.windup_guard);
     }
 
   last_steering_update_time = curr_time;
@@ -227,18 +228,12 @@ void update_steering_pid() {
     DEBUG_PRINT(",");
     DEBUG_PRINT(curr_angle);
     DEBUG_PRINT(",");
-    DEBUG_PRINT(pid.control*10);
+    DEBUG_PRINT(g_steering_pid.control*10);
     DEBUG_PRINT(",");
-    DEBUG_PRINT(pid.prev_error  );
+    DEBUG_PRINT(g_steering_pid.prev_input);
     DEBUG_PRINT(",");
-    DEBUG_PRINT(p_term*10);
+    DEBUG_PRINT(g_steering_pid.prev_steering_angle);
     DEBUG_PRINT(",");
-    DEBUG_PRINT(i_term*10);
-    DEBUG_PRINT(",");
-    DEBUG_PRINT(d_term*10);
-    DEBUG_PRINT(",");
-    DEBUG_PRINT(setpoint);
-    DEBUG_PRINT(",");
-    DEBUG_PRINTLN(flag);
+    DEBUG_PRINTLN(setpoint);
   }
 }

@@ -44,7 +44,6 @@ void publish_steering_report( void )
     steering_report.operator_override = (uint8_t) g_steering_control_state.operator_override;
     //steering_report.dtcs = g_steering_control_state.dtcs;
     steering_report.torque_command = g_steering_control_state.torque;
-    DEBUG_PRINTLN(steering_report.torque_command);
 
     cli();
     g_control_can.sendMsgBuf(
@@ -132,7 +131,7 @@ static void process_obd_steering_angle(const uint8_t * const data) {
 
 static void process_steering_angle_command(const uint8_t * const data) {
     if (data != NULL) {
-        setpoint = *(data+2);
+        memcpy(&setpoint, data+2, 4);
     }
 }
 

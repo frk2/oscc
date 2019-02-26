@@ -13,6 +13,7 @@
 #include "mcp_can.h"
 #include "steering_control.h"
 #include "oscc_pid.h"
+#include "oscc_serial.h"
 
 
 /*
