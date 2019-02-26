@@ -12,3 +12,6 @@
 cucumber.wire
 
 __pycache__/
+build/
+cmake-build-debug/
+.idea/

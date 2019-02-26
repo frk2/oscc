@@ -125,7 +125,7 @@ static void process_rx_frame(
 static void process_obd_steering_angle(const uint8_t * const data) {
     if (data != NULL) {
         curr_angle = data[0] | data[1] << 8;
-        curr_angle *= -0.1 * 37 / 520;
+        curr_angle *= -0.1 * DEG_TO_RAD;
         new_data = 1;
     }
 }
