@@ -43,6 +43,7 @@ typedef struct
     float integral_gain; /* Integral gain. */
 
     float derivative_gain; /* Derivative gain. */
+    float ff_gain;
 
     float prev_input; /* Previous input. */
 
@@ -68,7 +69,7 @@ typedef struct
 //              [in] dt - differentiation value
 //
 // ****************************************************************************
-int pid_update( pid_s* pid, float setpoint, float input, float dt );
+int pid_update( pid_s* pid, float setpoint, float input, float dt, float ff, bool debug=false);
 
 
 // ****************************************************************************

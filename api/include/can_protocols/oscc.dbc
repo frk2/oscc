@@ -93,6 +93,12 @@ BO_ 147 THROTTLE_REPORT: 8 THROTTLE
  SG_ throttle_report_dtcs : 32|8@1+ (1,0) [0|0] "" THROTTLE
  SG_ throttle_report_reserved : 40|24@1+ (1,0) [0|0] "" THROTTLE
 
+BO_ 148 VELOCITY_TRAJECTORY: 8 THROTTLE
+ SG_ velocity_trajectory_vel_start : 0|16@1- (1,0) [0|1] "" THROTTLE
+ SG_ velocity_trajectory_acc_start : 16|32@1- (1,0) [0|1] "" THROTTLE
+ SG_ velocity_trajectory_vel_end : 32|48@1- (1,0) [0|1] "" THROTTLE
+ SG_ velocity_trajectory_acc_end : 48|64@1- (1,0) [0|1] "" THROTTLE
+
 BO_ 175 FAULT_REPORT: 8 FAULT
  SG_ fault_report_magic : 0|16@1+ (1,0) [0|0] "" FAULT
  SG_ fault_report_fault_origin_id : 16|32@1+ (1,0) [0|0] "" FAULT

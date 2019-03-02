@@ -213,7 +213,7 @@ void update_steering_pid() {
     delta_t_sec = (curr_time - last_steering_update_time)/1000.0;
 
     if (g_steering_control_state.enabled) {
-        pid_update(&g_steering_pid, setpoint, curr_angle, delta_t_sec);
+        pid_update(&g_steering_pid, setpoint, curr_angle, delta_t_sec, 0.0);
         apply_torque(g_steering_pid.control);
     } else {
       apply_torque(0.0);
