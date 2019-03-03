@@ -214,7 +214,7 @@ void update_steering_pid() {
 
     if (g_steering_control_state.enabled) {
         pid_update(&g_steering_pid, setpoint, curr_angle, delta_t_sec, 0.0);
-        apply_torque(g_steering_pid.control);
+        apply_torque(g_steering_pid.filtered_control);
     } else {
       apply_torque(0.0);
       pid_zeroize(&g_steering_pid, g_steering_pid.windup_guard);

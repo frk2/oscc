@@ -50,6 +50,8 @@ typedef struct
     float int_error; /* Error. */
 
     float control; /* Control. */
+    float filter_rate;
+    float filtered_control;
 
     float prev_steering_angle; /* Previous steering angle. */
 } pid_s;

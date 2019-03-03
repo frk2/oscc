@@ -159,8 +159,8 @@ typedef struct
 {
     float target_vel_start;
     float target_acc_start;
-    float target_vel_end;
-    float target_acc_end;
+//    float target_vel_end;
+//    float target_acc_end;
 } oscc_long_speed_traj_s;
 
 #pragma pack(pop)

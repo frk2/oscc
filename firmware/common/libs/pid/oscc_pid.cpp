@@ -59,7 +59,7 @@ int pid_update( pid_s* pid, float setpoint, float input, float dt, float ff, boo
     ff_term = (pid->ff_gain * ff);
     // summation of terms
     pid->control = CONSTRAIN(p_term + i_term - d_term, pid->min_control + ff_term, pid->max_control);
-
+    pid->filtered_control = pid->filter_rate * pid->filtered_control + (1-pid->filter_rate) * pid->control;
     // save current error as previous error for next iteration
     pid->prev_input = input;
 
@@ -72,7 +72,7 @@ int pid_update( pid_s* pid, float setpoint, float input, float dt, float ff, boo
         DEBUG_PRINT(",");
         DEBUG_PRINT(input);
         DEBUG_PRINT(",");
-        DEBUG_PRINT(control*10);
+        DEBUG_PRINT(pid->control);
         DEBUG_PRINT("::");
         DEBUG_PRINT(p_term);
         DEBUG_PRINT("-");
@@ -82,7 +82,7 @@ int pid_update( pid_s* pid, float setpoint, float input, float dt, float ff, boo
         DEBUG_PRINT("-");
         DEBUG_PRINT(ff_term);
         DEBUG_PRINT("::");
-        DEBUG_PRINTLN(g_steering_pid.prev_steering_angle);
+        DEBUG_PRINTLN(pid->prev_steering_angle);
     }
 
     return PID_SUCCESS;

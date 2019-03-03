@@ -14,7 +14,7 @@
 #include "oscc_can.h"
 #include "vehicles.h"
 #include "longitudinal_control.h"
-
+#include "debug.h"
 static void parse_brake_report( uint8_t *data );
 static void parse_steering_report( uint8_t *data );
 static void parse_throttle_report( uint8_t *data );
@@ -107,17 +107,18 @@ void send_brake( float brake )
 }
 
 void process_velocity_trajectory(uint8_t * data) {
-    memcpy(data, &g_speed_trajectory, sizeof(g_speed_trajectory));
+    memcpy(&g_speed_trajectory, data, sizeof(g_speed_trajectory));
     g_last_trajectory_update_time = millis();
 }
 
 void process_wheel_speed(uint8_t * data)
 {
+//    DEBUG_PRINTLN("GOT WHEEL SPEED");
     kia_soul_obd_wheel_speed_data_s * wheel_data = (kia_soul_obd_wheel_speed_data_s *)data;
     float avg = (wheel_data->wheel_speed_front_left + wheel_data->wheel_speed_front_right +
       wheel_data->wheel_speed_rear_left + wheel_data->wheel_speed_rear_right) / 4.0;
-    g_curr_speed = avg;
-
+    g_curr_speed = avg * 0.02 * 0.44704;
+//    DEBUG_PRINTLN(g_curr_speed);
     g_new_data = true;
 }
 

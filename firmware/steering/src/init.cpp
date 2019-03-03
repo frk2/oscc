@@ -29,6 +29,7 @@ void init_globals( void )
     g_steering_pid.integral_gain = 0.1;
     g_steering_pid.windup_guard = 2.0;
     g_steering_pid.ff_gain = 0.0;
+    g_steering_pid.filter_rate = 0.95;
     pid_zeroize(&g_steering_pid, g_steering_pid.windup_guard);
     curr_angle = 0.0;
     setpoint = 0.0;
