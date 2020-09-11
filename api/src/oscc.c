@@ -248,7 +248,7 @@ oscc_result_t oscc_publish_steering_torque( double torque )
     steering_cmd.torque_command = (float) torque;
 
     result = oscc_can_write(
-        OSCC_STEERING_COMMAND_CAN_ID,
+        0x84,
         (void *) &steering_cmd,
         sizeof(steering_cmd) );
 
