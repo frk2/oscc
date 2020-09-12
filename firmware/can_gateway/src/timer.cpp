@@ -13,5 +13,5 @@
 void start_timer( void )
 {
     timer1_init( DISPLAY_UPDATE_FREQUENCY_IN_HZ, update_display );
-    timer2_init( 50, update_long_pid);
+    // timer2_init( 50, update_long_pid);
 }
