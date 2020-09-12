@@ -129,6 +129,9 @@ static void process_obd_steering_angle(const uint8_t * const data) {
 }
 
 static void process_steering_angle_command(const uint8_t * const data) {
+    float fdata = *(data+2);
+    DEBUG_PRINT(fdata);
+    DEBUG_PRINT("\n");
     if (data != NULL) {
         memcpy(&setpoint, data + 2, 4);
 	    can_use_diff = 0;

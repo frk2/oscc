@@ -1,7 +1,7 @@
 project(steering)
 
 set(ARDUINO_DEFAULT_BOARD uno)
-SET(ARDUINO_DEFAULT_PORT /dev/ttyUSB0)
+SET(ARDUINO_DEFAULT_PORT /dev/ttyACM0)
 set(ARDUINO_DEFAULT_BAUDRATE ${SERIAL_BAUD_STEERING})
 
 add_definitions(-DSERIAL_BAUD=${ARDUINO_DEFAULT_BAUDRATE})
@@ -25,7 +25,9 @@ generate_arduino_firmware(
     ${CMAKE_SOURCE_DIR}/common/libs/can/oscc_can.cpp
     ${CMAKE_SOURCE_DIR}/common/libs/dac/oscc_dac.cpp
     ${CMAKE_SOURCE_DIR}/common/libs/timer/oscc_timer.cpp
-    src/main.cpp
+    ${CMAKE_SOURCE_DIR}/common/libs/pid/oscc_pid.cpp
+
+        src/main.cpp
     src/globals.cpp
     src/init.cpp
     src/communications.cpp
@@ -44,4 +46,7 @@ target_include_directories(
     ${CMAKE_SOURCE_DIR}/common/libs/can
     ${CMAKE_SOURCE_DIR}/common/libs/dac
     ${CMAKE_SOURCE_DIR}/common/libs/timer
-    ${CMAKE_SOURCE_DIR}/../api/include)
+    ${CMAKE_SOURCE_DIR}/common/libs/BasicLinearAlgebra
+        ${CMAKE_SOURCE_DIR}/common/libs/pid
+
+        ${CMAKE_SOURCE_DIR}/../api/include)

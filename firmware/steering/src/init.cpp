@@ -67,5 +67,5 @@ void init_communication_interfaces( void )
 void start_timers( void )
 {
     timer1_init( OSCC_REPORT_STEERING_PUBLISH_FREQ_IN_HZ, publish_steering_report );
-    timer2_init(50, update_pid);
+ //   timer2_init(50, update_pid);
 }
