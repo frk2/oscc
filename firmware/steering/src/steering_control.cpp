@@ -224,16 +224,16 @@ void update_steering_pid() {
 
     int dt = (int)(delta_t_sec*1000);
 
-    DEBUG_PRINT(dt);
-    DEBUG_PRINT(",");
-    DEBUG_PRINT(curr_angle);
-    DEBUG_PRINT(",");
-    DEBUG_PRINT(g_steering_pid.control*10);
-    DEBUG_PRINT(",");
-    DEBUG_PRINT(g_steering_pid.prev_input);
-    DEBUG_PRINT(",");
-    DEBUG_PRINT(g_steering_pid.prev_steering_angle);
-    DEBUG_PRINT(",");
-    DEBUG_PRINTLN(setpoint);
+    // DEBUG_PRINT(dt);
+    // DEBUG_PRINT(",");
+    // DEBUG_PRINT(curr_angle);
+    // DEBUG_PRINT(",");
+    // DEBUG_PRINT(g_steering_pid.control*10);
+    // DEBUG_PRINT(",");
+    // DEBUG_PRINT(g_steering_pid.prev_input);
+    // DEBUG_PRINT(",");
+    // DEBUG_PRINT(g_steering_pid.prev_steering_angle);
+    // DEBUG_PRINT(",");
+    // DEBUG_PRINTLN(setpoint);
   }
 }
