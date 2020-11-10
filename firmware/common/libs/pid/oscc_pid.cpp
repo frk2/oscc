@@ -76,14 +76,17 @@ int pid_update( pid_s* pid, float setpoint, float input, float dt, float ff, boo
         DEBUG_PRINT(pid->control);
         DEBUG_PRINT(" ::p: ");
         DEBUG_PRINT(p_term);
-        DEBUG_PRINT(" -i: ");
-        DEBUG_PRINT(i_term);
+        // DEBUG_PRINT(" -i: ");
+        // DEBUG_PRINT(i_term);
         DEBUG_PRINT(" -d: ");
         DEBUG_PRINT(d_term);
-        DEBUG_PRINT(" -ff: ");
-        DEBUG_PRINT(ff_term);
-        DEBUG_PRINT(" ::prev: ");
-        DEBUG_PRINTLN(pid->prev_steering_angle);
+        // DEBUG_PRINT(" -ff: ");
+        // DEBUG_PRINT(ff_term);
+        // DEBUG_PRINT(" ::prev: ");
+        // DEBUG_PRINTLN(pid->prev_steering_angle);
+        DEBUG_PRINT(" NL:");
+        DEBUG_PRINTLN(p_term + i_term - d_term);
+
     }
 
     return PID_SUCCESS;

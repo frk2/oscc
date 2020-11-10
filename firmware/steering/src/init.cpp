@@ -22,9 +22,9 @@ void init_globals( void )
     g_steering_control_state.enabled = false;
     g_steering_control_state.operator_override = false;
     g_steering_control_state.dtcs = 0;
-    g_steering_pid.min_control = -0.24;
-    g_steering_pid.max_control = 0.24;
-    g_steering_pid.proportional_gain = 4;
+    g_steering_pid.min_control = -0.60;
+    g_steering_pid.max_control = 0.60;
+    g_steering_pid.proportional_gain = 1.00;
     g_steering_pid.derivative_gain = 0.5;
     g_steering_pid.integral_gain = 0.0;
     g_steering_pid.windup_guard = 2.0;
